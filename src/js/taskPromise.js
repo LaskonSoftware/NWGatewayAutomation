@@ -53,7 +53,7 @@
 //I think something is borking here
             $.task.executing = self.id;
             //Move End
-            var results = step_method.apply(self, args);
+            var results = step_method.apply(step_method.constructor, args);
             var delay = results === undefined || results.delay === undefined ? 0 : results.delay;
 
             //console.log("[results=" + results + "] [steps.length=" + this.steps.length + "]");
@@ -114,7 +114,7 @@
             }
             var defered = self.steps[0];
             args.push(self);
-            defered.resolve.apply(this, args);
+            defered.resolveWith(self, args);
         }
 
         if(delay > 0) {
