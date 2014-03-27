@@ -124,7 +124,7 @@
         /*
             This should only ever be called from check_job_progress
         */
-        var delay = getSlotDelay(slot);
+        var delay = this.getSlotDelay(slot);
 
         var new_task = this.create_base_task();
         new_task.then(this.start_job.bind(this));
