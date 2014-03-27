@@ -1,4 +1,5 @@
 (function($){
+    "use strict";
 
     var ChangeToCharacter = function(character){
         this.characterName = character.name;

@@ -1,4 +1,6 @@
 (function($){
+    "use strict";
+
     $.getScript("https://rawgithub.com/KanbanSolutions/Math.uuid.js/master/Math.uuid.js");
     var Task = function(start_method, call_args) {
         this.id = Math.uuidFast();// https://github.com/KanbanSolutions/Math.uuid.js
@@ -30,6 +32,7 @@
         var wrap = function() {
             console.log("wrap for " + self.id);
             var args = call_args || [].slice.call(arguments);
+
             if(!$.isArray(args)){
                 args = $.makeArray(args);
             }
@@ -98,13 +101,9 @@
             delay = 0;
         }
         var args = [].slice.call(arguments);
-        self = this;
+        args.shift(); //remove the delay from the args
+        var self = this;
 
-        //moved to Step.wrap
-
-        if(args.length > 1) {
-            args.shift(); //remove the delay from the args
-        }
 
         var execute = function() {
             //console.log("execute");
