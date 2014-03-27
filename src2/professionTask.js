@@ -286,7 +286,7 @@
 
         var d = new Date();
         d.setMilliseconds(d.getMilliseconds() + milliseconds);
-        console.log("[task=" + $('.taskdetails-header > h2').text() + "] for " + _character.name + " delayed for "
+        console.log("[task=" + $('.taskdetails-header > h2').text() + "] for " + this.character.name + " delayed for "
             + milliseconds + " ms at " + new Date().toLocaleString()
             + " resuming at " + d.toLocaleString() + " [timeText=" + timeBarText + "]");
 
