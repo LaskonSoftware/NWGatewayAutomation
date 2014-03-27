@@ -106,6 +106,14 @@
             delay = 0;
         }
         var args = [].slice.call(arguments);
+        //Moving from progress
+        if(!($.task.executing === self.id || $.task.executing === null)) {
+            requestAnimationFrame(function() {
+                self.progress.apply(self, args);
+            });
+            return;
+        }
+        $.task.executing = self.id;
         args.shift(); //remove the delay from the args
         var self = this;
 
