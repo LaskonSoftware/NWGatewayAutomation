@@ -20,8 +20,17 @@
         }
     };
 
+
+$.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/NeverwinterGateway.js').then(function(){
+    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src/js/taskPromise.js');
+}).then(function(){
+    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/switchToCharacter.js');
+}).then(function(){
+    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/professionTask.js');
+})
+
 var thor = {
-    name: 'Akta Incubore',
+    name: 'Thoradin Strifeminer',
     assignments:{
         filter:{
             sort: 'desc',
@@ -29,21 +38,13 @@ var thor = {
             hide_unmetreqs: true
         },
         tasks: {
-            leadership: ['Survey Terrain', 'Gather Astral Diamonds'],//['Assemble Maps', 'Chart Region', 'Feed the Needy']
+            leadership: ['Assemble Maps', 'Chart Region', 'Feed the Needy'],
             tailoring:['Intensive Scrap Gathering'],
             artificing:['Gather Ore and Wood']
         },
-        todo:['leadership','tailoring','artificing']
+        todo:['leadership']
     }
 };
-
-$.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/NeverwinterGateway.js').then(function(){
-    return $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src/js/taskPromise.js');
-}).then(function(){
-    return $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/switchToCharacter.js');
-}).then(function(){
-    return $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/professionTask.js');
-})
 
 
     (function($){
@@ -51,7 +52,7 @@ $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/N
         var task = profTask.create_base_task();
         task.then(profTask.check_job_progress.bind(profTask));
         task.progress();
-        console.log(task.id);
+        //console.log(task.id);
     }(jQuery));
 
 
@@ -60,7 +61,7 @@ $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/N
     var profTask = $.nwg.profession.create(thor);
     var task = $.task.create(profTask.start);
     task.progress();
-    console.log(task.id);
+    //console.log(task.id);
 }(jQuery));
 
 var amaranthine = {

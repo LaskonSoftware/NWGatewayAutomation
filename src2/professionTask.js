@@ -141,7 +141,6 @@
         task.then(this.assignment_filter.bind(this));
         task.then(this.assignment_sort.bind(this));
         task.then(this.find_assignment.bind(this), job);
-        task.then(this.find_assignment.bind(this), job);
         task.then(this.select_assignment.bind(this));
 
         return {
@@ -187,30 +186,38 @@
 
         console.log(titles);
 
-        var availableTasks = $('.task-list-entry');
         var assignment = undefined;
 
         while(!assignment) {
+            var availableTasks = $('.task-list-entry');
             for (var i = 0; i < titles.length && assignment === undefined; i++) {
                 var title = titles[i].trim();
-                var availableTask = availableTasks.find('h4:contains(' + title + ')').parents('.task-list-entry');;
+                console.log("title = " + title);
+                var availableTask = availableTasks.find('h4:contains(' + title + ')').parents('.task-list-entry');
+                console.log("availableTaskLength=" + availableTask.length );
                 if(availableTask.length > 0) {
+                    console.log("found");
                     assignment = availableTask.eq(0);
                 }
             }
 
             if(!$('.paginate_enabled_next').is(':visible') && assignment === undefined) {
+                console.log("No next");
                 break;
             } else if(assignment === undefined) {
+                console.log("next");
                 $('.paginate_enabled_next').trigger('click');
             }
         }
 
+        console.log(assignment);
 
         var name = this.assignments.todo.shift();
         this.assignments.todo.push(name);
 
         if(!assignment) {
+            console.log("assignment still null");
+            console.log(assignment);
             var new_task = this.create_base_task();
             new_task.then(this.start_job.bind(this));
             new_task.start_in(1500);
@@ -227,6 +234,7 @@
     };
 
     Profession.prototype.select_assignment = function select_assignment(assignment, task){
+        console.log("select_assignment");
         assignment.find('button:contains(' + data.text._continue + ')').trigger('click');
 
         task.then(this.select_assets.bind(this));
@@ -259,6 +267,7 @@
             startBtn.trigger('click');
         }
 
+        console.log(delay);
         var new_task = this.create_base_task();
         new_task.then(this.collect_reward.bind(this));
         new_task.then(this.accept_reward.bind(this));

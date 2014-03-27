@@ -29,7 +29,7 @@
         var self = this;
         var wrap = function() {
             var args = call_args || [];
-            console.log("wrap for " + self.id);
+            //console.log("wrap for " + self.id);
 
             if(!args.length && arguments.length) {
                 args = [].slice.call(arguments);
