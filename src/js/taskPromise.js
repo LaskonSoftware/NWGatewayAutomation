@@ -1,5 +1,5 @@
 (function($){
-    $.getScript("https://raw.github.com/KanbanSolutions/Math.uuid.js/master/Math.uuid.js");
+    $.getScript("https://rawgithub.com/KanbanSolutions/Math.uuid.js/master/Math.uuid.js");
     var Task = function(start_method, call_args) {
         this.id = Math.uuidFast();// https://github.com/KanbanSolutions/Math.uuid.js
         this.steps = [];
