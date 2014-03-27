@@ -21,7 +21,7 @@
     };
 
 var thor = {
-    name: 'Thoradin Strifeminer',
+    name: 'Akta Incubore',
     assignments:{
         filter:{
             sort: 'desc',
@@ -29,19 +29,32 @@ var thor = {
             hide_unmetreqs: true
         },
         tasks: {
-            leadership: ['Feed the Needy']//['Assemble Maps', 'Chart Region', 'Feed the Needy']
+            leadership: ['Survey Terrain', 'Gather Astral Diamonds'],//['Assemble Maps', 'Chart Region', 'Feed the Needy']
+            tailoring:['Intensive Scrap Gathering'],
+            artificing:['Gather Ore and Wood']
         },
-        todo:['leadership'],
+        todo:['leadership','tailoring','artificing']
     }
 };
 
-(function($){
-    var profTask = $.nwg.profession.create(thor);
-    var task = profTask.create_base_task();
-    task.then(profTask.check_job_progress);
-    task.progress();
-    console.log(task.id);
-}(jQuery));
+$.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/NeverwinterGateway.js').then(function(){
+    return $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src/js/taskPromise.js');
+}).then(function(){
+    return $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/switchToCharacter.js');
+}).then(function(){
+    return $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/professionTask.js');
+})
+
+
+    (function($){
+        var profTask = $.nwg.profession.create(thor);
+        var task = profTask.create_base_task();
+        task.then(profTask.check_job_progress.bind(profTask));
+        task.progress();
+        console.log(task.id);
+    }(jQuery));
+
+
 
 (function($){
     var profTask = $.nwg.profession.create(thor);

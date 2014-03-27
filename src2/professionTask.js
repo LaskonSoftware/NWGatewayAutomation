@@ -106,12 +106,15 @@
             task = self.create_base_task();
 
             if(slot.hasClass('task-slot-finished')) {
-                task.then(this.start_collection);
+                task.then(self.collect_reward.bind(self));
+                task.then(self.accept_reward.bind(self));
             } else if(slot.hasClass('task-slot-open')) {
-                task.then(this.start_job);
+                task.then(self.start_job.bind(self));
             } else if(slot.hasClass('task-slot-progress')) {
-                task.then(this.start_from_progress_bar, [slot]);
+                task.then(self.start_from_progress_bar.bind(self), [slot]);
             }
+
+            task.start_in(1500);
         });
 
         old_task.finish();
@@ -121,11 +124,11 @@
         /*
             This should only ever be called from check_job_progress
         */
-        var delay = getSlotDelay(slot);
+        var delay = this.getSlotDelay(slot);
 
         var new_task = this.create_base_task();
-        new_task.then(this.start_job);
-        new_task.progress(delay);
+        new_task.then(this.start_job.bind(this));
+        new_task.start_in(delay);
 
         task.finish();
     };
@@ -135,9 +138,11 @@
         var selector = data.selector[job];
         $(selector).trigger('click');
 
-        task.then(this.assignment_filter);
-        task.then(this.assignment_sort);
-        task.then(this.select_assignment, job);
+        task.then(this.assignment_filter.bind(this));
+        task.then(this.assignment_sort.bind(this));
+        task.then(this.find_assignment.bind(this), job);
+        task.then(this.find_assignment.bind(this), job);
+        task.then(this.select_assignment.bind(this));
 
         return {
             error: false,
@@ -167,7 +172,7 @@
     Profession.prototype.assignment_sort = function assignment_sort(task){
         //console.log("applying Sort");
         var selector = $('[name=sort_level]');
-        selector.val(_assignmentSort);
+        selector.val(this.assignments.filter.sort);
         selector.trigger('change');
 
 
@@ -177,12 +182,54 @@
         };
     };
 
-    Profession.prototype.select_assignment = function select_assignment(job, task){
+    Profession.prototype.find_assignment = function find_assignment(job, task){
         var titles = this.assignments.tasks[job];
 
         console.log(titles);
 
-        task.then(this.select_assets);
+        var availableTasks = $('.task-list-entry');
+        var assignment = undefined;
+
+        while(!assignment) {
+            for (var i = 0; i < titles.length && assignment === undefined; i++) {
+                var title = titles[i].trim();
+                var availableTask = availableTasks.find('h4:contains(' + title + ')').parents('.task-list-entry');;
+                if(availableTask.length > 0) {
+                    assignment = availableTask.eq(0);
+                }
+            }
+
+            if(!$('.paginate_enabled_next').is(':visible') && assignment === undefined) {
+                break;
+            } else if(assignment === undefined) {
+                $('.paginate_enabled_next').trigger('click');
+            }
+        }
+
+
+        var name = this.assignments.todo.shift();
+        this.assignments.todo.push(name);
+
+        if(!assignment) {
+            var new_task = this.create_base_task();
+            new_task.then(this.start_job.bind(this));
+            new_task.start_in(1500);
+
+            task.finish();
+            return;
+        }
+
+        return {
+            error: false,
+            delay: 3000,
+            args:[assignment]
+        };
+    };
+
+    Profession.prototype.select_assignment = function select_assignment(assignment, task){
+        assignment.find('button:contains(' + data.text._continue + ')').trigger('click');
+
+        task.then(this.select_assets.bind(this));
 
         return {
             error: false,
@@ -192,7 +239,7 @@
 
     Profession.prototype.select_assets = function select_assets(task){
 
-        task.then(this.start_task);
+        task.then(this.start_task.bind(this));
 
         return {
             error: false,
@@ -210,14 +257,12 @@
         }
         if(startBtn.length > 0){
             startBtn.trigger('click');
-        }else{
-            $(professionInfo.select.overview).trigger('click');
         }
 
         var new_task = this.create_base_task();
-        new_task.then(this.collect_reward);
-        new_task.then(this.accept_reward);
-        new_task.progress(delay);
+        new_task.then(this.collect_reward.bind(this));
+        new_task.then(this.accept_reward.bind(this));
+        new_task.start_in(delay);
 
         task.finish();
     };
@@ -242,8 +287,8 @@
         $('.modal-window button:contains(' + data.text.collectResult + ')').trigger('click');
 
         var new_task = this.create_base_task();
-        new_task.then(this.start_job);
-        new_task.progress(1500);
+        new_task.then(this.start_job.bind(this));
+        new_task.start_in(1500);
 
         task.finish();
     };
@@ -251,9 +296,9 @@
 
     Profession.prototype.create_base_task = function create_base_task() {
         var self = this;
-        var task = $.task.create(this.changeCharacter.activate);
-        task.then(this.make_profession_active, [self]);
-        task.then(this.change_to_overview, [self]);
+        var task = $.task.create(this.changeCharacter.activate.bind(this.changeCharacter));
+        task.then(this.make_profession_active.bind(this));
+        task.then(this.change_to_overview.bind(this));
 
         return task;
     };
@@ -283,7 +328,7 @@
 
         var d = new Date();
         d.setMilliseconds(d.getMilliseconds() + milliseconds);
-        console.log("[task=" + $('.taskdetails-header > h2').text() + "] for " + _character.name + " delayed for "
+        console.log("[task=" + $('.taskdetails-header > h2').text() + "] for " + this.character.name + " delayed for "
             + milliseconds + " ms at " + new Date().toLocaleString()
             + " resuming at " + d.toLocaleString() + " [timeText=" + timeBarText + "]");
 
@@ -312,6 +357,13 @@
         minutes = hours * 60 + minutes;
         seconds = minutes * 60 + seconds;
         var milliseconds = seconds * 1000;
+
+        var d = new Date();
+        d.setMilliseconds(d.getMilliseconds() + milliseconds);
+        console.log("[task=" + slot.find('h4').text() + "] for " + this.character.name + " delayed for "
+            + milliseconds + " ms at " + new Date().toLocaleString()
+            + " resuming at " + d.toLocaleString() + " [timeText=" + timeBarText + "]");
+
         return milliseconds + 2000;//We wait an extra bit
     };
 

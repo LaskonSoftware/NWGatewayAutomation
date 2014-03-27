@@ -1,9 +1,10 @@
 (function($){
-    $.getScript("https://raw.github.com/KanbanSolutions/Math.uuid.js/master/Math.uuid.js");
+    $.getScript("https://rawgithub.com/KanbanSolutions/Math.uuid.js/master/Math.uuid.js");
     var Task = function(start_method, call_args) {
         this.id = Math.uuidFast();// https://github.com/KanbanSolutions/Math.uuid.js
         this.steps = [];
         this.then(start_method, call_args);
+        this.finished = false;
     };
 
     Task.prototype.then = function(step_method, call_args) {
@@ -26,34 +27,21 @@
 
     Task.prototype.Step = function(step_method, call_args) {
         var self = this;
-        console.log("Step for " + self.id);
         var wrap = function() {
+            var args = call_args || [];
             console.log("wrap for " + self.id);
-            var args = call_args || [].slice.call(arguments);
+
+            if(!args.length && arguments.length) {
+                args = [].slice.call(arguments);
+            }
+
             if(!$.isArray(args)){
                 args = $.makeArray(args);
             }
-            //console.log("wrap: " + call_args);
-            //console.log("wrap: " + args);
-            /*
-                results object for any task step method
-                {
-                    error: true||false,
-                    delay:0, //int
-                    args:[], //Args to pass to the next step (if any)
-                }
-            */
-            //Moving from progress
-            if(!($.task.executing === self.id || $.task.executing === null)) {
-                requestAnimationFrame(function() {
-                    self.progress.apply(self, args);
-                });
-                return;
-            }
-//I think something is borking here
-            $.task.executing = self.id;
-            //Move End
+            args.push(self);
             var results = step_method.apply(self, args);
+            if(this.finished) return;
+
             var delay = results === undefined || results.delay === undefined ? 0 : results.delay;
 
             //console.log("[results=" + results + "] [steps.length=" + this.steps.length + "]");
@@ -98,13 +86,17 @@
             delay = 0;
         }
         var args = [].slice.call(arguments);
-        self = this;
-
-        //moved to Step.wrap
-
-        if(args.length > 1) {
-            args.shift(); //remove the delay from the args
+        var self = this;
+        //Moving from progress
+        if(!($.task.executing === self.id || $.task.executing === null)) {
+            setTimeout(function() {
+                self.progress.apply(self, args);
+            }, Math.max(delay, 3000));
+            return;
         }
+        $.task.executing = this.id;
+        args.shift();
+
 
         var execute = function() {
             //console.log("execute");
@@ -113,8 +105,7 @@
                 return;
             }
             var defered = self.steps[0];
-            args.push(self);
-            defered.resolve.apply(this, args);
+            defered.resolve.apply(null, args);
         }
 
         if(delay > 0) {
@@ -126,11 +117,27 @@
         return this;
     };
 
+    Task.prototype.start_in = function(delay) {
+        if(!delay){
+            delay = 0;
+        }
+        var args = [].slice.call(arguments);
+        var self = this;
+        args.shift(); //remove the delay from the args
+
+        setTimeout(function(){
+            self.progress.apply(self, args);
+        }, delay);
+
+        return this;
+    }
+
     Task.prototype.finish = function() {
         //console.log("finish");
         var self = this;
         this.steps = [];
         $.task.executing = null;
+        this.finished = true;
         requestAnimationFrame(function(){
           delete self;
         });
