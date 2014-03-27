@@ -29,7 +29,7 @@ var thor = {
             hide_unmetreqs: true
         },
         tasks: {
-            leadership: ['Feed the Needy']//['Assemble Maps', 'Chart Region', 'Feed the Needy']
+            leadership: ['Survey Terrain']//['Assemble Maps', 'Chart Region', 'Feed the Needy']
         },
         todo:['leadership'],
     }

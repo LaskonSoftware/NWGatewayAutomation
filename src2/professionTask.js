@@ -140,7 +140,9 @@
 
         task.then(this.assignment_filter.bind(this));
         task.then(this.assignment_sort.bind(this));
-        task.then(this.select_assignment.bind(this), job);
+        task.then(this.find_assignment.bind(this), job);
+        task.then(this.find_assignment.bind(this), job);
+        task.then(this.find_assignment.bind(this));
 
         return {
             error: false,
@@ -180,10 +182,51 @@
         };
     };
 
-    Profession.prototype.select_assignment = function select_assignment(job, task){
+    Profession.prototype.find_assignment = function find_assignment(job, task){
         var titles = this.assignments.tasks[job];
 
         console.log(titles);
+
+        var availableTasks = $('.task-list-entry');
+        var assignment = undefined;
+
+        while(!assignment) {
+            for (var i = 0; i < titles.length && assignment === undefined; i++) {
+                var title = titles[i].trim();
+                var availableTask = availableTasks.find('h4:contains(' + title + ')').parents('.task-list-entry');;
+                if(availableTask.length > 0) {
+                    assignment = availableTask.eq(0);
+                }
+            }
+
+            if(!$('.paginate_enabled_next').is(':visible')) {
+                break;
+            }
+            $('.paginate_enabled_next').trigger('click');
+        }
+
+
+        var name = this.assignments.todo.shift();
+        this.assignments.todo.push(name);
+
+        if(!assignment) {
+            var new_task = this.create_base_task();
+            new_task.then(this.start_job.bind(this));
+            new_task.progress(1500);
+
+            task.finish();
+            return;
+        }
+
+        return {
+            error: false,
+            delay: 3000,
+            args:[assignment]
+        };
+    };
+
+    Profession.prototype.select_assignment = function select_assignment(assignment, task){
+        assignment.find('button:contains(' + data.text._continue + ')').trigger('click');
 
         task.then(this.select_assets.bind(this));
 
@@ -213,8 +256,6 @@
         }
         if(startBtn.length > 0){
             startBtn.trigger('click');
-        }else{
-            $(professionInfo.select.overview).trigger('click');
         }
 
         var new_task = this.create_base_task();

@@ -4,6 +4,7 @@
         this.id = Math.uuidFast();// https://github.com/KanbanSolutions/Math.uuid.js
         this.steps = [];
         this.then(start_method, call_args);
+        this.finished = false;
     };
 
     Task.prototype.then = function(step_method, call_args) {
@@ -31,6 +32,10 @@
             console.log("wrap for " + self.id);
             var args = call_args || [];
 
+            if(!args.length && arguments.length) {
+                args = [].slice.call(arguments);
+            }
+
             if(!$.isArray(args)){
                 args = $.makeArray(args);
             }
@@ -56,6 +61,8 @@
             //Move End
             args.push(self);
             var results = step_method.apply(self, args);
+            if(this.finished) return;
+
             var delay = results === undefined || results.delay === undefined ? 0 : results.delay;
 
             //console.log("[results=" + results + "] [steps.length=" + this.steps.length + "]");
@@ -111,7 +118,7 @@
                 return;
             }
             var defered = self.steps[0];
-            defered.resolveWith(self, args);
+            defered.resolve(args);
         }
 
         if(delay > 0) {
@@ -128,6 +135,7 @@
         var self = this;
         this.steps = [];
         $.task.executing = null;
+        this.finished = true;
         requestAnimationFrame(function(){
           delete self;
         });
