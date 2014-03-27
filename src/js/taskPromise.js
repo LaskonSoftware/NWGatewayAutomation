@@ -29,7 +29,7 @@
         console.log("Step for " + self.id);
         var wrap = function() {
             console.log("wrap for " + self.id);
-            var args = call_args || [].slice.call(arguments);
+            var args = call_args || [];
 
             if(!$.isArray(args)){
                 args = $.makeArray(args);
@@ -54,6 +54,7 @@
 //I think something is borking here
             $.task.executing = self.id;
             //Move End
+            args.push(self);
             var results = step_method.apply(self, args);
             var delay = results === undefined || results.delay === undefined ? 0 : results.delay;
 
@@ -110,7 +111,6 @@
                 return;
             }
             var defered = self.steps[0];
-            args.push(self);
             defered.resolveWith(self, args);
         }
 
