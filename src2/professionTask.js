@@ -199,10 +199,11 @@
                 }
             }
 
-            if(!$('.paginate_enabled_next').is(':visible')) {
+            if(!$('.paginate_enabled_next').is(':visible') && assignment === undefined) {
                 break;
+            } else if(assignment === undefined) {
+                $('.paginate_enabled_next').trigger('click');
             }
-            $('.paginate_enabled_next').trigger('click');
         }
 
 
