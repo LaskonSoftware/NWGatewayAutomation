@@ -357,6 +357,13 @@
         minutes = hours * 60 + minutes;
         seconds = minutes * 60 + seconds;
         var milliseconds = seconds * 1000;
+
+        var d = new Date();
+        d.setMilliseconds(d.getMilliseconds() + milliseconds);
+        console.log("[task=" + slot.find('h4').text() + "] for " + this.character.name + " delayed for "
+            + milliseconds + " ms at " + new Date().toLocaleString()
+            + " resuming at " + d.toLocaleString() + " [timeText=" + timeBarText + "]");
+
         return milliseconds + 2000;//We wait an extra bit
     };
 

@@ -29,7 +29,6 @@
         var self = this;
         var wrap = function() {
             var args = call_args || [];
-            }
             console.log("wrap for " + self.id);
 
             if(!args.length && arguments.length) {
@@ -38,6 +37,7 @@
 
             if(!$.isArray(args)){
                 args = $.makeArray(args);
+            }
             args.push(self);
             var results = step_method.apply(self, args);
             if(this.finished) return;
@@ -89,9 +89,9 @@
         var self = this;
         //Moving from progress
         if(!($.task.executing === self.id || $.task.executing === null)) {
-            requestAnimationFrame(function() {
+            setTimeout(function() {
                 self.progress.apply(self, args);
-            });
+            }, Math.max(delay, 3000));
             return;
         }
         $.task.executing = this.id;

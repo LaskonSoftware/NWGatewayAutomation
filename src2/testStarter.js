@@ -29,10 +29,10 @@ var thor = {
             hide_unmetreqs: true
         },
         tasks: {
-            leadership: ['Survey Terrain']//['Assemble Maps', 'Chart Region', 'Feed the Needy']
+            leadership: ['Survey Terrain', 'Gather Astral Diamonds'],//['Assemble Maps', 'Chart Region', 'Feed the Needy']
             tailoring:['Intensive Scrap Gathering']
         },
-        todo:['leadership','tailoring'],
+        todo:['leadership','tailoring']
     }
 };
 
