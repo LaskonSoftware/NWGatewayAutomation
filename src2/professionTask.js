@@ -107,6 +107,7 @@
 
             if(slot.hasClass('task-slot-finished')) {
                 task.then(self.collect_reward.bind(self));
+                task.then(self.accept_reward.bind(self));
             } else if(slot.hasClass('task-slot-open')) {
                 task.then(self.start_job.bind(self));
             } else if(slot.hasClass('task-slot-progress')) {
