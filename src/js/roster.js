@@ -22,7 +22,7 @@ var roster = function(){
                 }
             },
             */
-            tierClass:'tier-1'
+            tierClass:'tier-3'
         }
     };
 

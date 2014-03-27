@@ -16,10 +16,10 @@
     };
 
     Task.prototype.Step = function(step_method, call_args) {
-        //console.log("Step");
         var self = this;
+        console.log("Step for " + self.id);
         var wrap = function() {
-            //console.log("wrap");
+            console.log("wrap for " + self.id);
             var args = call_args || [].slice.call(arguments);
             if(!$.isArray(args)){
                 args = $.makeArray(args);
@@ -41,7 +41,7 @@
                 });
                 return;
             }
-
+//I think something is borking here 
             $.task.executing = self.id;
             //Move End
             var results = step_method.apply(self, args);
@@ -125,6 +125,7 @@
           delete self;    
         });
     };
+
 
     $.extend(true, {
         task: {
