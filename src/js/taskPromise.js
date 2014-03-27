@@ -15,6 +15,15 @@
         return this;
     };
 
+    Task.prototype.insert = function(step_method, call_args) {
+        //console.log("then: " + call_args);
+        var defered = $.Deferred();
+        defered.then(this.Step(step_method, call_args));
+        this.steps.splice(1, 0, defered);
+
+        return this;
+    };
+
     Task.prototype.Step = function(step_method, call_args) {
         var self = this;
         console.log("Step for " + self.id);
@@ -41,7 +50,7 @@
                 });
                 return;
             }
-//I think something is borking here 
+//I think something is borking here
             $.task.executing = self.id;
             //Move End
             var results = step_method.apply(self, args);
@@ -91,7 +100,7 @@
         var args = [].slice.call(arguments);
         self = this;
 
-        //moved to Step.wrap        
+        //moved to Step.wrap
 
         if(args.length > 1) {
             args.shift(); //remove the delay from the args
@@ -104,7 +113,8 @@
                 return;
             }
             var defered = self.steps[0];
-            defered.resolveWith(self, args);
+            args.push(self);
+            defered.resolve.apply(this, args);
         }
 
         if(delay > 0) {
@@ -122,7 +132,7 @@
         this.steps = [];
         $.task.executing = null;
         requestAnimationFrame(function(){
-          delete self;    
+          delete self;
         });
     };
 

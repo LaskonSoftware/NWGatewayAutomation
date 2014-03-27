@@ -1,11 +1,22 @@
 (function($){
-    
-    var _characterName = {};
+
     var ChangeToCharacter = function(character){
-        _characterName = character.name;
+        this.characterName = character.name;
     };
 
-    ChangeToCharacter.prototype.openSelector = function(){
+    ChangeToCharacter.prototype.activate = function activate(task) {
+        if(!this.isActiveCharacter()) {
+            task.insert(this.openSelector);
+            task.insert(this.selectCharacter);
+        }
+
+        return{
+            error: false,
+            delay: 0
+        };
+    };
+
+    ChangeToCharacter.prototype.openSelector = function openSelector() {
         var changeCharacterText = 'Change Character'
         $('a:contains(' + changeCharacterText + ')').trigger('click');
 
@@ -14,10 +25,10 @@
             delay: 2000
         };
     };
-    
-    ChangeToCharacter.prototype.selectCharacter = function() {
+
+    ChangeToCharacter.prototype.selectCharacter = function selectCharacter() {
         var self = this;
-        $('a > h4.char-list-name:contains(' + _characterName + ')').trigger('click');
+        $('a > h4.char-list-name:contains(' + this.characterName + ')').trigger('click');
 
         return{
             error: false,
@@ -25,17 +36,16 @@
         };
     };
 
-    ChangeToCharacter.prototype.isActiveCharacter = function() {
-        var changeCharacterText = 'Change Character'
-        return $('.name-char:contains(' + _characterName + ')').length  > 0
+    ChangeToCharacter.prototype.isActiveCharacter = function isActiveCharacter() {
+        return $('.name-char:contains(' + this.characterName + ')').length  > 0
     };
 
-    $.extend(true, $.nwg,  { 
+    $.extend(true, $.nwg,  {
         changeCharacter: {
             create:function(character){
                 return new ChangeToCharacter(character);
             }
-        } 
+        }
     });
 
 }(jQuery));

@@ -37,7 +37,8 @@ var thor = {
 
 (function($){
     var profTask = $.nwg.profession.create(thor);
-    var task = $.task.create(profTask.start);
+    var task = profTask.create_base_task();
+    task.then(profTask.check_job_progress);
     task.progress();
     console.log(task.id);
 }(jQuery));
