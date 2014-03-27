@@ -45,7 +45,7 @@ $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/N
     (function($){
         var profTask = $.nwg.profession.create(thor);
         var task = profTask.create_base_task();
-        task.then(profTask.check_job_progress);
+        task.then(profTask.check_job_progress.bind(profTask));
         task.progress();
         console.log(task.id);
     }(jQuery));

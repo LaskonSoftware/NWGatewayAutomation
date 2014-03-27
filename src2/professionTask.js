@@ -106,11 +106,11 @@
             task = self.create_base_task();
 
             if(slot.hasClass('task-slot-finished')) {
-                task.then(this.start_collection.bind(self));
+                task.then(self.start_collection.bind(self));
             } else if(slot.hasClass('task-slot-open')) {
-                task.then(this.start_job.bind(self));
+                task.then(self.start_job.bind(self));
             } else if(slot.hasClass('task-slot-progress')) {
-                task.then(this.start_from_progress_bar.bind(self), [slot]);
+                task.then(self.start_from_progress_bar.bind(self), [slot]);
             }
         });
 
