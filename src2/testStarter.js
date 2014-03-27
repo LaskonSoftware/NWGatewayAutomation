@@ -41,7 +41,9 @@ $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/N
     return $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/switchToCharacter.js');
 }).then(function(){
     return $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/professionTask.js');
-}).then(function(){
+})
+
+
     (function($){
         var profTask = $.nwg.profession.create(thor);
         var task = profTask.create_base_task();
@@ -49,7 +51,8 @@ $.getScript('https://rawgithub.com/djgilcrease/NWGatewayAutomation/master/src2/N
         task.progress();
         console.log(task.id);
     }(jQuery));
-});
+
+
 
 (function($){
     var profTask = $.nwg.profession.create(thor);

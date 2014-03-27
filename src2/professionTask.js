@@ -112,6 +112,8 @@
             } else if(slot.hasClass('task-slot-progress')) {
                 task.then(self.start_from_progress_bar.bind(self), [slot]);
             }
+
+            task.progress(1500);
         });
 
         old_task.finish();
