@@ -246,7 +246,15 @@
     };
 
     Profession.prototype.select_assets = function select_assets(task){
-
+        var assetsCount = $('.icon-block.large.any-crafting.Junk.empty').length;
+        if(assetsCount > 0){
+            task.then(this.open_asset_modal.bind(this));
+            for(var i = 0; i < assetsCount - 1; i++){
+                task.then(this.select_asset_item.bind(this));
+                task.then(this.open_asset_modal.bind(this));
+            }
+            task.then(this.select_asset_item.bind(this));
+        }
         task.then(this.start_task.bind(this));
 
         return {
@@ -254,6 +262,55 @@
             delay: 3000
         };
     };
+
+    Profession.prototype.open_asset_modal = function open_asset_window(task) {
+        var delay = 500;
+        var assets = $('.icon-block.large.any-crafting.Junk.empty');
+        if(assets.length > 0){
+            $(assets[0]).find('button').trigger('click');
+            delay = 1000;
+        }
+
+        return {
+            error: false,
+            delay: delay
+        };
+    };
+
+    Profession.prototype.select_asset_item = function select_asset_item(task) {
+        
+        var delay = 1000;
+        var special = $('.modal-item-list').find('.icon-block.simple.Special');
+        var gold = $('.modal-item-list').find('.icon-block.simple.Gold');
+        var silver = $('.modal-item-list').find('.icon-block.simple.Silver');
+        var bronze = $('.modal-item-list').find('.icon-block.simple.Bronze');
+
+        if(special.length > 0){
+            $(special[0]).trigger('click');
+        }else if(gold.length > 0){
+            $(gold[0]).trigger('click');
+        }else if(silver.length > 0){
+            $(silver[0]).trigger('click');
+        }else if(bronze.length > 0){
+            $(bronze[0]).trigger('click');
+        }
+        else {
+            var close = $('.modal-content > .close-button');
+            if(close){
+                close.trigger('click');
+            }
+            else{
+                delay = 0;
+            }
+        }
+        
+
+        return {
+            error: false,
+            delay: delay
+        };
+    };
+
 
     Profession.prototype.start_task = function start_task(task){
         var delay = this.getDelay();
@@ -276,7 +333,7 @@
         task.finish();
     };
 
-    Profession.prototype.collect_reward = function select_assets(task){
+    Profession.prototype.collect_reward = function collect_reward(task){
         var rewards = $('button:contains(' + data.text.collectResult + ')');
         if(!rewards.length) {
             return {
@@ -292,7 +349,7 @@
         };
     };
 
-    Profession.prototype.accept_reward = function select_assets(task){
+    Profession.prototype.accept_reward = function accept_reward(task){
         $('.modal-window button:contains(' + data.text.collectResult + ')').trigger('click');
 
         var new_task = this.create_base_task();
