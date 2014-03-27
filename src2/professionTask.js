@@ -30,10 +30,7 @@
             finishNow: 'Finish Now'
         }
     };
-    var _character = {};
-    var _assignments = {};
-    var _self = {};
-    var _changeCharacter = {};
+
     var Profession = function(character){
         /*var assignments = {
             filter:{
@@ -53,342 +50,216 @@
                 alchemy:[]
             }
         };*/
-        
-        _character = character;
+
+        this.character = character;
         //The site has an issue with professions and going to more than 3
-        _assignments = _character.assignments;
-        _assignments.todo = _assignments.todo.slice(0, 3);
-        _changeCharacter = $.nwg.changeCharacter.create(_character);
-        _self = this;
+        this.assignments = this.character.assignments;
+        this.assignments.todo = this.assignments.todo.slice(0, 3);
+        this.changeCharacter = $.nwg.changeCharacter.create(this.character);
     };
 
-    Profession.prototype.start = function(){
-
-        var selfTask = this;
-
-        if(!_changeCharacter.isActiveCharacter()){
-            //console.log("PRF:start:isActiveCharacter");
-            //Start the task by opening the character selector
-            selfTask.then(_changeCharacter.openSelector, 1000);
-
-            //Select the charcter
-            selfTask.then(_changeCharacter.selectCharacter, 1000);
-        }
-        else if(!checks.isProfessionActiveTab()){
-            //console.log("PRF:start:isProfessionActiveTab");
-
-            //Switch to the professions tab
-            selfTask.then(actions.makeProfessionActive, 1000);
-            //ensure we're on the overview tab
-            selfTask.then(actions.changeToOverview, 1000);
-        }
-        else if(checks.isModal()){
-            //console.log("PRF:start:isModal");
-            //collect the result
-            selfTask.then(actions.collectResult, 1000)
-        }
-        else if(checks.isRewardAvailable()){
-            //console.log("PRF:start:isRewardAvailable");
-            //Open collect result modal
-            selfTask.then(actions.openCollectModal, 1000);
-        }
-        else if(checks.isTaskAvailable()){
-            //console.log("PRF:start:isTaskAvailable");
-
-            //Switch to a profession
-            selfTask.then(actions.changeToProfession, 1000);
-        }
-        else if(checks.isProfessionTaskList()){
-            //console.log("PRF:start:isTaskAvailable");
-            //Find an assignment
-            selfTask.then(actions.findAssignment, 1000);
-        }
-        else if(checks.isOnTaskDetails()){
-            //console.log("PRF:start:isOnTaskDetails");
-            var assetsCount = $('.icon-block.large.any-crafting.Junk.empty').length;
-            //console.log("[assetCount=" + assetsCount + "]");
-            //load available assets
-            if(assetsCount > 0){
-                selfTask.then(actions.openAssetWindow, 1000);
-                for(var i = 0; i < assetsCount - 1; i++){
-                    selfTask.then(actions.selectAssetItem, 1000);
-                    selfTask.then(actions.openAssetWindow, 1000);
-                }
-                selfTask.then(actions.selectAssetItem, 1000);
-            }
-            //Start the assignment
-            selfTask.then(actions.startAssignment, 1000);
-            return;//Starting assignment; don't coninue
-        }
-        else if(!checks.isOverview()){
-            //console.log("PRF:start:!isOverview");
-            selfTask.then(actions.changeToOverview, 1000);
-        }
-        else{
-            //console.log("PRF:start:ELSE");
-            //There's nothing to do; stop.
-            this.finish();
-            return;
-        }
-
-        //console.log("queueing up self.start");
-        //Next up is this method!
-        selfTask.then(_self.start, 1000);
-    };
-
-    Profession.prototype.stop = function(){
-        //Find a way to stop this...
-    };
-
-    var actions = {
-        makeProfessionActive: function(){
-            //console.log("PRF:actions:makeProfessionActive");
-            $('.nav-professions').trigger('click');
+    Profession.prototype.make_profession_active = function(task) {
+        //console.log("PRF:actions:makeProfessionActive");
+        var tab = $('.nav-professions');
+        if(!tab.hasClass('selected')) {
+            tab.trigger('click');
             return {
                 error: false,
                 delay: 3000
             };
-        },
-        changeToOverview: function(){
-            //console.log("PRF:actions:changeToOverview");
+        }
+
+        return {
+            error: false,
+            delay: 0
+        };
+    };
+
+    Profession.prototype.change_to_overview = function(task) {
+        //console.log("PRF:actions:changeToOverview");
+        if(!$('.page-professions-overview').is(':visible')){
             $(data.selector.overview).trigger('click');
-            
-            return {
-                error: false,
-                delay: 3000
-            };
-        },
-        openCollectModal: function(){
-            //console.log("PRF:actions:openCollectModal");
-            $('button:contains(' + data.text.collectResult + ')').eq(0).trigger('click');
-            return {
-                error:false,
-                delay:3000
-            };
-        },
-        collectResult: function(){
-            //console.log("PRF:actions:collectResult");
-            var m = $('.modal-window');
-
-            var collectBtn = m.find('button:contains(' + data.text.collectResult + ')')
-
-            if(collectBtn.length == 1){
-                //console.log("clicking modal 'collect result'");
-                collectBtn.trigger('click');
-            }
 
             return {
                 error: false,
                 delay: 3000
             };
-        },
-        changeToProfession: function(){
-            //console.log("PRF:actions:changeToProfession");
-            var pName = _assignments.todo[0];
-            var selector = data.selector[pName];
-            $(selector).trigger('click');
-
-            return {
-                error: false,
-                delay: 3000
-            };
-        },
-        findAssignment: function(){
-            //console.log("PRF:actions:findAssignment");
-            var titles = _assignments.tasks[_assignments.todo[0]];
-
-            var shiftProfession = function(){
-                var pName = _assignments.todo.shift();
-                _assignments.todo.push(pName);
-            };
-
-            var findAssignmentOnPage = function(){
-                var availableTasks = $('.task-list-entry:not(.unmet)');
-                var assignment = undefined;
-                
-                for (var i = 0; i < titles.length && assignment === undefined; i++) {
-                    var title = titles[i].trim();
-                    for (var j = 0; j < availableTasks.length && assignment === undefined; j++) {
-                        var availableTask = $(availableTasks[j]);
-                        var availableTitle = $(availableTask.find("h4")).text().trim();
-                        //console.log("[title=" + title + "] vs [availableTitle=" + availableTitle + "]");
-                        if(title == availableTitle){
-                            //console.log("matched");
-                            return availableTask;
-                        }
-                    }
-                }
-                return undefined;
-            };
-
-            var nextPageAvailable = function(){
-                return $('.paginate_enabled_next').is(':visible');
-            };
-
-            var advancePage = function(){
-                if(nextPageAvailable()){
-                    var nextBtn = $('.paginate_enabled_next');
-                    nextBtn.trigger('click');
-                }
-            };
-
-            var assignment = findAssignmentOnPage();
-
-            if(assignment === undefined && !nextPageAvailable()){
-                shiftProfession();//shift professions as we've run out of placed to check for current
-                //don't return, let the nextAction process
-                //console.log("TODO=" + professionInfo.todo);
-                $(data.selector.overview).trigger('click');
-            }
-            else{
-
-                //if couldn't find the assignment
-                if(assignment === undefined){
-                    advancePage();
-                }
-                else {//We have an assignment
-                    //Move the current title to the end of the list
-                    var prevTitle = titles.shift();
-                    titles.push(prevTitle);
-                    assignment.find('button:contains(' + data.text._continue + ')').trigger('click');
-                }
-            }
-
-            return {
-                error: false,
-                delay: 2000
-            };
-        },
-        openAssetWindow: function(){
-            //console.log("PRF:actions:openAssetWindow");
-            var delay = 500;
-            var assets = $('.icon-block.large.any-crafting.Junk.empty');
-            if(assets.length > 0){
-                $(assets[0]).find('button').trigger('click');
-                delay = 1000;
-            }
-
-            return {
-                error: false,
-                delay: delay
-            };
-        },
-        selectAssetItem: function(){
-            //console.log("PRF:actions:selectAssetItem");
-            var delay = 1000;
-            var special = $('.modal-item-list').find('.icon-block.simple.Special');
-            var gold = $('.modal-item-list').find('.icon-block.simple.Gold');
-            var silver = $('.modal-item-list').find('.icon-block.simple.Silver');
-            var bronze = $('.modal-item-list').find('.icon-block.simple.Bronze');
-
-            if(special.length > 0){
-                $(special[0]).trigger('click');
-            }else if(gold.length > 0){
-                $(gold[0]).trigger('click');
-            }else if(silver.length > 0){
-                $(silver[0]).trigger('click');
-            }else if(bronze.length > 0){
-                $(bronze[0]).trigger('click');
-            }
-            else {
-                var close = $('.modal-content > .close-button');
-                if(close){
-                    close.trigger('click');
-                }
-                else{
-                    delay = 0;
-                }
-            }
-            
-
-            return {
-                error: false,
-                delay: delay
-            };
-        },
-        startAssignment: function(){
-            //console.log("PRF:actions:startAssignment");
-            var startBtn = [];
-            startBtn = $('div:not(.disabled) > button:contains(' + data.text.startTask + ')');
-            if(startBtn.length > 0){
-                
-                var newTask = $.task.create(_self.startTask, getDelay());
-                newTask.progress();
-
-                startBtn.trigger('click');
-
-                //console.log("started Assignment");
-            }else{
-
-                //console.log("started Assi-overview");
-                //Cycle the failed task to the back
-                $(data.selector.overview).trigger('click');
-            }
-            return {error:false};
-        },
-        longDelay: function(){
-            //console.log("PRF:actions:longDelay");
-            return {
-                error: false,
-                delay: 1 * 60 * 60 * 1000//1 hour
-            }
         }
+
+        return {
+            error: false,
+            delay: 0
+        };
     };
 
-    var checks = {
-        isOverview: function(){
-            return $('.page-professions-overview').length === 1;
-        },
-        isModal: function(){
-            return $('.professions-rewards-modal').is(':visible');
-        },
-        isProfessionActiveTab: function(){
-            return $('#content_title:contains(Profession)').length === 1;
-        },
-        isProfessionTaskList: function(){
-            return $('#tasklist_wrapper').is(':visible');
-        },
-        isRewardAvailable: function(){
-            return $('button:contains(' + data.text.collectResult + ')').is(':visible') && !$('.modal-window').is(':visible');
-        },
-        isTaskAvailable: function(){
-            return $('button:contains(' + data.text.chooseTask + ')').is(':visible') && !$('.modal-window').is(':visible');
-        },
-        isOnTaskDetails:function(){
-            return $('.page-professions-taskdetails').length ===1 
-        }
-    }
+    Profession.prototype.check_job_progress = function(old_task) {
+        var self = this;
+        var slots = $('.task-slot-locked, .task-slot-progress, .task-slot-finished, .task-slot-open');
 
-    var applyFiltering = function(){
-        var applyFilters = function(){
-            //console.log("applying filters");
-            var filterCheckBoxes = ['hide_abovelevel', 'hide_unmetreqs'];
-            for (var i = 0; i < filterCheckBoxes.length; i++) {
-                var checkbox = filterCheckBoxes[i];
-                if(!$('[name=' + checkbox + ']').is(':checked') !== assignments.filter[checkbox]){
-                    $('input[name=' + checkbox + ']').parent().trigger('click');
-                }
+        slots.filter(':not(.task-slot-locked)').each(function(idx, slot) {
+            slot = $(slot);
+            var time_left = slot.find('.bar-text').text();
+            var button_msg = slot.find('.input-field button').text();
+            var delay = 0,
+                task;
+
+            task = self.create_base_task();
+
+            if(slot.hasClass('task-slot-finished')) {
+                task.then(this.start_collection);
+            } else if(slot.hasClass('task-slot-open')) {
+                task.then(this.start_job);
+            } else if(slot.hasClass('task-slot-progress')) {
+                task.then(this.start_from_progress_bar, [slot]);
             }
-        };
-        var applySort = function(){
-            //console.log("applying Sort");
-            var selector = $('[name=sort_level]');
-            selector.val(assignments.filter.sort);
-            selector.trigger('change');
-        };
+        });
 
-        applyFilters();
-        applySort();
+        old_task.finish();
+    };
+
+    Profession.prototype.start_from_progress_bar = function start_from_progress_bar(slot, task) {
+        /*
+            This should only ever be called from check_job_progress
+        */
+        var delay = getSlotDelay(slot);
+
+        var new_task = this.create_base_task();
+        new_task.then(this.start_job);
+        new_task.progress(delay);
+
+        task.finish();
+    };
+
+    Profession.prototype.start_job = function start_job(task){
+        var job = this.assignments.todo[0];
+        var selector = data.selector[job];
+        $(selector).trigger('click');
+
+        task.then(this.assignment_filter);
+        task.then(this.assignment_sort);
+        task.then(this.select_assignment, job);
+
+        return {
+            error: false,
+            delay: 3000
+        };
+    };
+
+    Profession.prototype.assignment_filter = function assignment_filter(task){
+        //console.log("applying filters");
+        var filterCheckBoxes = ['hide_abovelevel', 'hide_unmetreqs'];
+        for (var i = 0; i < filterCheckBoxes.length; i++) {
+            var checkbox = filterCheckBoxes[i];
+            if(!$('[name=' + checkbox + ']').is(':checked')){
+                //console.log("checking the box=" + checkbox);
+                $('input[name=' + checkbox + ']').parent().trigger('click');
+            }else{
+                //console.log("NOT checking the box=" + checkbox);
+            }
+        }
+
+        return {
+            error: false,
+            delay: 700
+        };
+    };
+
+    Profession.prototype.assignment_sort = function assignment_sort(task){
+        //console.log("applying Sort");
+        var selector = $('[name=sort_level]');
+        selector.val(_assignmentSort);
+        selector.trigger('change');
 
 
         return {
             error: false,
-            delay: 500
+            delay: 1500
         };
     };
 
-    var getDelay = function(){
-            
+    Profession.prototype.select_assignment = function select_assignment(job, task){
+        var titles = this.assignments.tasks[job];
+
+        console.log(titles);
+
+        task.then(this.select_assets);
+
+        return {
+            error: false,
+            delay: 3000
+        };
+    };
+
+    Profession.prototype.select_assets = function select_assets(task){
+
+        task.then(this.start_task);
+
+        return {
+            error: false,
+            delay: 3000
+        };
+    };
+
+    Profession.prototype.start_task = function start_task(task){
+        var delay = this.getDelay();
+        var startBtn = [];
+        try{
+            startBtn = $('div :not(.disabled) >button:contains(' + data.text.startTask + ')');
+        }catch(err){
+            //swallow
+        }
+        if(startBtn.length > 0){
+            startBtn.trigger('click');
+        }else{
+            $(professionInfo.select.overview).trigger('click');
+        }
+
+        var new_task = this.create_base_task();
+        new_task.then(this.collect_reward);
+        new_task.then(this.accept_reward);
+        new_task.progress(delay);
+
+        task.finish();
+    };
+
+    Profession.prototype.collect_reward = function select_assets(task){
+        var rewards = $('button:contains(' + data.text.collectResult + ')');
+        if(!rewards.length) {
+            return {
+                error: true,
+                delay: 2000
+            };
+        }
+        rewards.eq(0).trigger('click');
+
+        return {
+            error:false,
+            delay:2000
+        };
+    };
+
+    Profession.prototype.accept_reward = function select_assets(task){
+        $('.modal-window button:contains(' + data.text.collectResult + ')').trigger('click');
+
+        var new_task = this.create_base_task();
+        new_task.then(this.start_job);
+        new_task.progress(1500);
+
+        task.finish();
+    };
+
+
+    Profession.prototype.create_base_task = function create_base_task() {
+        var self = this;
+        var task = $.task.create(this.changeCharacter.activate);
+        task.then(this.make_profession_active, [self]);
+        task.then(this.change_to_overview, [self]);
+
+        return task;
+    };
+
+
+    Profession.prototype.getDelay = function getDelay() {
         var timeBarText = $('.task-duration-time').text();
         var times = timeBarText.split(" ");
         var hours = 0;
@@ -412,14 +283,37 @@
 
         var d = new Date();
         d.setMilliseconds(d.getMilliseconds() + milliseconds);
-        ;console.log("[task=" + $('.taskdetails-header > h2').text() + "] for " + _character.name + " delayed for " 
+        console.log("[task=" + $('.taskdetails-header > h2').text() + "] for " + _character.name + " delayed for "
             + milliseconds + " ms at " + new Date().toLocaleString()
             + " resuming at " + d.toLocaleString() + " [timeText=" + timeBarText + "]");
 
 
         return milliseconds;
     };
-    //internal stuff
+
+
+    Profession.prototype.getSlotDelay = function getSlotDelay(slot) {
+        var timeBarText = slot.find('.bar-text').text();
+        //console.log("timebar=" + timeBarText);
+        var times = timeBarText.split(" ");
+        var hours = 0;
+        var minutes = 0;
+        var seconds = 0;
+        for(var i = 0; i < times.length; i++){
+            var str = times[i];
+            if(str.indexOf('h') > 0){
+                hours = parseInt(str);
+            } else if(str.indexOf('m') > 0){
+                minutes = parseInt(str);
+            } else if(str.indexOf('s') > 0){
+                seconds = parseInt(str);
+            }
+        }
+        minutes = hours * 60 + minutes;
+        seconds = minutes * 60 + seconds;
+        var milliseconds = seconds * 1000;
+        return milliseconds + 2000;//We wait an extra bit
+    };
 
 
     $.extend(true, $.nwg, {
