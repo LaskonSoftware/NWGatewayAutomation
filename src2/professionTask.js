@@ -114,7 +114,7 @@
                 task.then(self.start_from_progress_bar.bind(self), [slot]);
             }
 
-            task.progress(1500);
+            task.start_in(1500);
         });
 
         old_task.finish();
@@ -128,7 +128,7 @@
 
         var new_task = this.create_base_task();
         new_task.then(this.start_job.bind(this));
-        new_task.progress(delay);
+        new_task.start_in(delay);
 
         task.finish();
     };
@@ -213,7 +213,7 @@
         if(!assignment) {
             var new_task = this.create_base_task();
             new_task.then(this.start_job.bind(this));
-            new_task.progress(1500);
+            new_task.start_in(1500);
 
             task.finish();
             return;
@@ -262,7 +262,7 @@
         var new_task = this.create_base_task();
         new_task.then(this.collect_reward.bind(this));
         new_task.then(this.accept_reward.bind(this));
-        new_task.progress(delay);
+        new_task.start_in(delay);
 
         task.finish();
     };
@@ -288,7 +288,7 @@
 
         var new_task = this.create_base_task();
         new_task.then(this.start_job.bind(this));
-        new_task.progress(1500);
+        new_task.start_in(1500);
 
         task.finish();
     };

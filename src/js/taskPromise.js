@@ -95,8 +95,7 @@
             return;
         }
         $.task.executing = this.id;
-        args.shift(); //remove the delay from the args
-        var self = this;
+        args.shift();
 
 
         var execute = function() {
@@ -117,6 +116,21 @@
 
         return this;
     };
+
+    Task.prototype.start_in = function(delay) {
+        if(!delay){
+            delay = 0;
+        }
+        var args = [].slice.call(arguments);
+        var self = this;
+        args.shift(); //remove the delay from the args
+
+        setTimeout(functin(){
+            self.progress.apply(self, args);
+        }, delay);
+
+        return this;
+    }
 
     Task.prototype.finish = function() {
         //console.log("finish");

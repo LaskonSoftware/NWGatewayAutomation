@@ -30,9 +30,10 @@ var thor = {
         },
         tasks: {
             leadership: ['Survey Terrain', 'Gather Astral Diamonds'],//['Assemble Maps', 'Chart Region', 'Feed the Needy']
-            tailoring:['Intensive Scrap Gathering']
+            tailoring:['Intensive Scrap Gathering'],
+            artificing:['Gather Ore and Wood']
         },
-        todo:['leadership','tailoring']
+        todo:['leadership','tailoring','artificing']
     }
 };
 
