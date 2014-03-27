@@ -125,7 +125,7 @@
         var self = this;
         args.shift(); //remove the delay from the args
 
-        setTimeout(functin(){
+        setTimeout(function(){
             self.progress.apply(self, args);
         }, delay);
 
