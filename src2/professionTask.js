@@ -142,7 +142,7 @@
         task.then(this.assignment_sort.bind(this));
         task.then(this.find_assignment.bind(this), job);
         task.then(this.find_assignment.bind(this), job);
-        task.then(this.find_assignment.bind(this));
+        task.then(this.select_assignment.bind(this));
 
         return {
             error: false,
