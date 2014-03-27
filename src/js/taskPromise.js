@@ -27,9 +27,7 @@
 
     Task.prototype.Step = function(step_method, call_args) {
         var self = this;
-        console.log("Step for " + self.id);
         var wrap = function() {
-            console.log("wrap for " + self.id);
             var args = call_args || [];
 
             if(!args.length && arguments.length) {
@@ -56,6 +54,7 @@
                 });
                 return;
             }
+            console.log("wrap for " + self.id);
 //I think something is borking here
             $.task.executing = self.id;
             //Move End
