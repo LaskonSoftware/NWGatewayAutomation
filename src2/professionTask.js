@@ -170,7 +170,7 @@
     Profession.prototype.assignment_sort = function assignment_sort(task){
         //console.log("applying Sort");
         var selector = $('[name=sort_level]');
-        selector.val(_assignmentSort);
+        selector.val(this.assignments.filter.sort);
         selector.trigger('change');
 
 
