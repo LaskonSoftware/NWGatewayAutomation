@@ -118,7 +118,7 @@
                 return;
             }
             var defered = self.steps[0];
-            defered.resolve(args);
+            defered.resolve.apply(null, args);
         }
 
         if(delay > 0) {
