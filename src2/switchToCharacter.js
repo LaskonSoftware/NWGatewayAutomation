@@ -5,9 +5,9 @@
     };
 
     ChangeToCharacter.prototype.activate = function activate(task) {
-        if(!this.isActiveCharacter()) {
-            task.insert(this.openSelector);
-            task.insert(this.selectCharacter);
+        if(!this.isActiveCharacter.bind(this)) {
+            task.insert(this.openSelector.bind(this));
+            task.insert(this.selectCharacter.bind(this));
         }
 
         return{

@@ -106,11 +106,11 @@
             task = self.create_base_task();
 
             if(slot.hasClass('task-slot-finished')) {
-                task.then(this.start_collection);
+                task.then(this.start_collection.bind(self));
             } else if(slot.hasClass('task-slot-open')) {
-                task.then(this.start_job);
+                task.then(this.start_job.bind(self));
             } else if(slot.hasClass('task-slot-progress')) {
-                task.then(this.start_from_progress_bar, [slot]);
+                task.then(this.start_from_progress_bar.bind(self), [slot]);
             }
         });
 
@@ -124,7 +124,7 @@
         var delay = getSlotDelay(slot);
 
         var new_task = this.create_base_task();
-        new_task.then(this.start_job);
+        new_task.then(this.start_job.bind(this));
         new_task.progress(delay);
 
         task.finish();
@@ -135,9 +135,9 @@
         var selector = data.selector[job];
         $(selector).trigger('click');
 
-        task.then(this.assignment_filter);
-        task.then(this.assignment_sort);
-        task.then(this.select_assignment, job);
+        task.then(this.assignment_filter.bind(this));
+        task.then(this.assignment_sort.bind(this));
+        task.then(this.select_assignment.bind(this), job);
 
         return {
             error: false,
@@ -182,7 +182,7 @@
 
         console.log(titles);
 
-        task.then(this.select_assets);
+        task.then(this.select_assets.bind(this));
 
         return {
             error: false,
@@ -192,7 +192,7 @@
 
     Profession.prototype.select_assets = function select_assets(task){
 
-        task.then(this.start_task);
+        task.then(this.start_task.bind(this));
 
         return {
             error: false,
@@ -215,8 +215,8 @@
         }
 
         var new_task = this.create_base_task();
-        new_task.then(this.collect_reward);
-        new_task.then(this.accept_reward);
+        new_task.then(this.collect_reward.bind(this));
+        new_task.then(this.accept_reward.bind(this));
         new_task.progress(delay);
 
         task.finish();
@@ -242,7 +242,7 @@
         $('.modal-window button:contains(' + data.text.collectResult + ')').trigger('click');
 
         var new_task = this.create_base_task();
-        new_task.then(this.start_job);
+        new_task.then(this.start_job.bind(this));
         new_task.progress(1500);
 
         task.finish();
@@ -251,9 +251,9 @@
 
     Profession.prototype.create_base_task = function create_base_task() {
         var self = this;
-        var task = $.task.create(this.changeCharacter.activate);
-        task.then(this.make_profession_active, [self]);
-        task.then(this.change_to_overview, [self]);
+        var task = $.task.create(this.changeCharacter.activate.bind(this));
+        task.then(this.make_profession_active.bind(this));
+        task.then(this.change_to_overview.bind(this));
 
         return task;
     };
