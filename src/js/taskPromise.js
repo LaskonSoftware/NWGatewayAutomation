@@ -29,6 +29,8 @@
         var self = this;
         var wrap = function() {
             var args = call_args || [];
+            }
+            console.log("wrap for " + self.id);
 
             if(!args.length && arguments.length) {
                 args = [].slice.call(arguments);
@@ -36,28 +38,6 @@
 
             if(!$.isArray(args)){
                 args = $.makeArray(args);
-            }
-            //console.log("wrap: " + call_args);
-            //console.log("wrap: " + args);
-            /*
-                results object for any task step method
-                {
-                    error: true||false,
-                    delay:0, //int
-                    args:[], //Args to pass to the next step (if any)
-                }
-            */
-            //Moving from progress
-            if(!($.task.executing === self.id || $.task.executing === null)) {
-                requestAnimationFrame(function() {
-                    self.progress.apply(self, args);
-                });
-                return;
-            }
-            console.log("wrap for " + self.id);
-//I think something is borking here
-            $.task.executing = self.id;
-            //Move End
             args.push(self);
             var results = step_method.apply(self, args);
             if(this.finished) return;
@@ -106,6 +86,7 @@
             delay = 0;
         }
         var args = [].slice.call(arguments);
+        var self = this;
         //Moving from progress
         if(!($.task.executing === self.id || $.task.executing === null)) {
             requestAnimationFrame(function() {
@@ -113,7 +94,7 @@
             });
             return;
         }
-        $.task.executing = self.id;
+        $.task.executing = this.id;
         args.shift(); //remove the delay from the args
         var self = this;
 

@@ -30,8 +30,9 @@ var thor = {
         },
         tasks: {
             leadership: ['Survey Terrain']//['Assemble Maps', 'Chart Region', 'Feed the Needy']
+            tailoring:['Intensive Scrap Gathering']
         },
-        todo:['leadership'],
+        todo:['leadership','tailoring'],
     }
 };
 
