@@ -184,7 +184,7 @@
     Profession.prototype.find_assignment = function find_assignment(job, task){
         var titles = this.assignments.tasks[job];
 
-        console.log(titles);
+        //console.log(titles);
 
         var assignment = undefined;
 
@@ -192,32 +192,32 @@
             var availableTasks = $('.task-list-entry');
             for (var i = 0; i < titles.length && assignment === undefined; i++) {
                 var title = titles[i].trim();
-                console.log("title = " + title);
+                //console.log("title = " + title);
                 var availableTask = availableTasks.find('h4:contains(' + title + ')').parents('.task-list-entry');
-                console.log("availableTaskLength=" + availableTask.length );
+                //console.log("availableTaskLength=" + availableTask.length );
                 if(availableTask.length > 0) {
-                    console.log("found");
+                    //console.log("found");
                     assignment = availableTask.eq(0);
                 }
             }
 
             if(!$('.paginate_enabled_next').is(':visible') && assignment === undefined) {
-                console.log("No next");
+                //console.log("No next");
                 break;
             } else if(assignment === undefined) {
-                console.log("next");
+                //console.log("next");
                 $('.paginate_enabled_next').trigger('click');
             }
         }
 
-        console.log(assignment);
+        //console.log(assignment);
 
         var name = this.assignments.todo.shift();
         this.assignments.todo.push(name);
 
         if(!assignment) {
-            console.log("assignment still null");
-            console.log(assignment);
+            //console.log("assignment still null");
+            //console.log(assignment);
             var new_task = this.create_base_task();
             new_task.then(this.start_job.bind(this));
             new_task.start_in(1500);
@@ -234,7 +234,7 @@
     };
 
     Profession.prototype.select_assignment = function select_assignment(assignment, task){
-        console.log("select_assignment");
+        //console.log("select_assignment");
         assignment.find('button:contains(' + data.text._continue + ')').trigger('click');
 
         task.then(this.select_assets.bind(this));
@@ -324,7 +324,7 @@
             startBtn.trigger('click');
         }
 
-        console.log(delay);
+        //console.log(delay);
         var new_task = this.create_base_task();
         new_task.then(this.collect_reward.bind(this));
         new_task.then(this.accept_reward.bind(this));
@@ -426,7 +426,7 @@
 
         var d = new Date();
         d.setMilliseconds(d.getMilliseconds() + milliseconds);
-        console.log("[task=" + slot.find('h4').text() + "] for " + this.character.name + " delayed for "
+        //console.log("[task=" + slot.find('h4').text() + "] for " + this.character.name + " delayed for "
             + milliseconds + " ms at " + new Date().toLocaleString()
             + " resuming at " + d.toLocaleString() + " [timeText=" + timeBarText + "]");
 

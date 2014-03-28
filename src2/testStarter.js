@@ -38,7 +38,7 @@ var thor = {
             hide_unmetreqs: true
         },
         tasks: {
-            leadership: ['Assemble Maps', 'Chart Region', 'Feed the Needy'],
+            leadership: ['Assemble Maps', 'Chart Region', 'Patrol the Mines', 'Feed the Needy', 'War Games Training'],
             tailoring:['Intensive Scrap Gathering'],
             artificing:['Gather Ore and Wood']
         },
