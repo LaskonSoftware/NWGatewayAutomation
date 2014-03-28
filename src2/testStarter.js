@@ -43,8 +43,55 @@ var thor = {
             artificing:['Gather Ore and Wood']
         },
         todo:['leadership']
-    }
+    },
+     adv : [
+        {
+            tier: "tier-2",
+            companions: [ 
+                {
+                    "name":"Conan",
+                    "required":true,
+                },
+                {
+                    "name":"Manny",
+                    "required":true,
+                },
+                {
+                    "name":"Cal",
+                    "exclude":true
+                },
+                {
+                    "name":"Drew",
+                    "exclude":true
+                }
+            ]
+        },
+        {
+            tier: "tier-3",
+            companions: [ 
+                {
+                    "name":"Cal",
+                    "required":true,
+                },
+                {
+                    "name":"Drew",
+                    "required":true,
+                }
+            ]
+        },
+
+    ]
 };
+
+
+(function($){
+    var profTask = $.nwg.adventure.create(thor);
+    var task = profTask.create_base_task();
+    //task.then(profTask.check_job_progress.bind(profTask));
+    task.progress();
+    //console.log(task.id);
+}(jQuery));
+
 
 
     (function($){
