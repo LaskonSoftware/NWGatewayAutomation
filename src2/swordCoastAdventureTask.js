@@ -70,6 +70,9 @@
 
     Adventure.prototype.check_adventure_state = function(tasl) {
         var task = self.crete_base_task();
+        /*
+            Should only be called from the crate_base_task method
+        */
 
         //isOverworld
             //start adventure
@@ -80,8 +83,11 @@
         //isSelectCompanion
             //choose encounter companion
         //isEncounter || isCritical
+            //select die
         //isDiceRoller
+            //wait
         //isModal
+            //clear
         //else
     };
 
