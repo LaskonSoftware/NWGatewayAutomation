@@ -71,11 +71,24 @@
     Adventure.prototype.check_adventure_state = function(tasl) {
         var task = self.crete_base_task();
 
+        //isOverworld
+            //start adventure
+        //isChooseParty
+            //select adventure party member (which attemps to cancel the confirm if up THEN clears THEN selects)
+        //isAdventure
+            //select encounter
+        //isSelectCompanion
+            //choose encounter companion
+        //isEncounter || isCritical
+        //isDiceRoller
+        //isModal
+        //else
     };
 
 
     Adventure.prototype.start_adventure = function(task) {
         //Needs to have switch to determine where to start...
+
     };
 
     Adventure.prototype.confirm_adventure = function(task) {
