@@ -426,9 +426,9 @@
 
         var d = new Date();
         d.setMilliseconds(d.getMilliseconds() + milliseconds);
-        //console.log("[task=" + slot.find('h4').text() + "] for " + this.character.name + " delayed for "
+        console.log("[slot=" + slot.find('h4').text() + "] for " + this.character.name + " delayed for "
             + milliseconds + " ms at " + new Date().toLocaleString()
-            + " resuming at " + d.toLocaleString() + " [timeText=" + timeBarText + "]");
+            + " resuming at " + d.toLocaleString() + " [slotText=" + timeBarText + "]");
 
         return milliseconds + 2000;//We wait an extra bit
     };
