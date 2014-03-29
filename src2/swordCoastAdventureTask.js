@@ -216,12 +216,13 @@
 
         return {
             error: false,
-            delay: 1000
+            delay: 3000
         };
     };
 
     Adventure.prototype.comfirm_adventure_party = function(task) {
-        console.log("comfirm_adventure_party");
+        $('.modal-window  button:contains(' + data.text.ok + ')').trigger('click');
+
         return {
             error: false,
             delay: 1000
@@ -229,8 +230,24 @@
     };
 
     Adventure.prototype.select_encounter = function(task) {
-        console.log("select_encounter");
-        
+        if($('.dungeon-map-inner').length === 0){
+            //console.log("Dungeon not ready");
+            return {
+                error: false,
+                delay: 1000
+            };
+        }
+        var encounters = $('.overlay.button:not(.complete, .exit, .boss)');
+        var boss = $('.overlay.button.boss');
+
+        //console.log("[encounters=" + encounters.length + "]");
+        if(encounters.length > 0){
+            encounters.eq(0).trigger('click');
+        }
+        else if(boss.length > 0){
+            boss.eq(0).trigger('click');
+        }
+
         return {
             error: false,
             delay: 1000
@@ -238,8 +255,15 @@
     };
 
     Adventure.prototype.select_encoutner_companion = function(task) {
-        console.log("select_encoutner_companion");
-        
+        var companions = $('a.selectable');
+        if(!companions.length){
+            //console.log("companions not found");
+            return {
+                error: false,
+                delay: 1000
+            };
+        };
+        $('a.selectable').eq(0).trigger('click');
         return {
             error: false,
             delay: 1000
@@ -247,12 +271,12 @@
     };
 
     Adventure.prototype.select_die = function(task) {
-        console.log("select_die");
+        if(!dicePicker()){
+            $('.nav-dungeons').trigger('click');
+        }
+
         task.finish();
-        return {
-            error: false,
-            delay: 1000
-        };
+        
     };
 
     Adventure.prototype.clear_modal = function(task) {

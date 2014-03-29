@@ -27,6 +27,8 @@ $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/Neverwi
     return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/switchToCharacter.js');
 }).then(function(){
     return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/professionTask.js');
+}).then(function(){
+    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/swordCoastAdventureTask.js');
 })
 
 var thor = {
@@ -38,7 +40,7 @@ var thor = {
             hide_unmetreqs: true
         },
         tasks: {
-            leadership: ['Assemble Maps', 'Chart Region', 'Patrol the Mines', 'Feed the Needy', 'War Games Training'],
+            leadership: ['Assemble Maps', 'Chart Region', 'Explore Local Area', 'Patrol the Mines', 'Feed the Needy', 'War Games Training'],
             tailoring:['Intensive Scrap Gathering'],
             artificing:['Gather Ore and Wood']
         },

@@ -5,14 +5,17 @@
     };
 
     ChangeToCharacter.prototype.activate = function activate(task) {
-        if(!this.isActiveCharacter.bind(this)) {
+        if(!this.isActiveCharacter()){
             task.insert(this.openSelector.bind(this));
             task.insert(this.selectCharacter.bind(this));
+        }
+        else{
+            console.log(this.characterName + " is currently active");
         }
 
         return{
             error: false,
-            delay: 0
+            delay: 100
         };
     };
 

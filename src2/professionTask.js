@@ -362,7 +362,7 @@
 
     Profession.prototype.create_base_task = function create_base_task() {
         var self = this;
-        var task = $.task.create(this.changeCharacter.activate.bind(this.changeCharacter));
+        var task = $.task.create(this.changeCharacter.activate.bind(this));
         task.then(this.make_profession_active.bind(this));
         task.then(this.change_to_overview.bind(this));
 
