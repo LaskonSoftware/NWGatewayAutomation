@@ -234,6 +234,7 @@
                 }
             }
             else if(totalCompanionCount <= PARTY_SIZE && disabledCount === 0){
+                console.log("available compansions are all");
                 companionsToSelect = availableCompanions;
                 return false;
             }
