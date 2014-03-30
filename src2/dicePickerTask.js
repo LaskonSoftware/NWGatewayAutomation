@@ -19,16 +19,16 @@
 
         if(!die){
             console.log("no die");
-            var new_task = $.nwg.adventure.create(this.character);
+            var new_task = $.nwg.adventure.create(this.character).create_base_task();
             console.log(new_task);
-            new_task.start_in(1500);
+            new_task.start_in(2000);
             task.finish();
             return;
         }
 
         die.trigger('click');
 
-        task.then(this.pick_die.bind(this));
+        task.then(this.pick_die.bind(this), 2000);
 
         return {
             error: false,
