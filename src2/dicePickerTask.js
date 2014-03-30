@@ -13,7 +13,7 @@
             };
         }
 
-        var die = this.brain.pick_die();
+        var die = this.brain.find_die();
 
         if(!die){
             var new_task = $.nwg.adventure.create(character);
@@ -35,8 +35,8 @@
 
     $.extend(true, $.nwg, {
         dicePicker: {
-            create:function(brain){
-                return new DicePicker(brain);
+            create:function(character, brain){
+                return new DicePicker(character, brain);
             }
         }
     });
