@@ -127,7 +127,7 @@
             //wait
         //isModal
             //clear
-        else if (data.state.isModal){
+        else if (data.state.isModal()){
             console.log("isModal");
             task.then(this.clear_modal.bind(this));
             task.then($.nwg.adventure.create(this.character).check_adventure_state.bind(this));
