@@ -144,7 +144,7 @@
             //We're done - set up a new one.
             var new_task = new $.nwg.adventure.create(this.character).create_base_task();
             new_task.start_in(1500);
-            task.finish();
+            return {error:false, delay: 2000};
         }
         else if (data.state.isModal()){
             console.log("isModal");
