@@ -51,7 +51,7 @@ var thor = {
         todo:['leadership']
     },
      adv : [
-        {
+        {   tier: "tier-2",
             companions: [ 
             ]
         }
