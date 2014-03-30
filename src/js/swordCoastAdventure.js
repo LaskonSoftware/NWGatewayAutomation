@@ -243,7 +243,7 @@ var swordCoastAdventure = function(tierClass){
             adventure: {
                 selectEncounter: function(){
                     //console.log("selectEncounter");
-                    if(!$('.dungeon-map-inner').length){
+                    if(!$('.dungeon-map-inner').length === 0){
                         //console.log("Dungeon not ready");
                         return {
                             error: false,
