@@ -142,7 +142,7 @@
             task.then(this.clear_modal.bind(this));
             task.then(this.clear_modal.bind(this));//clears the daily reward if it appears
             //We're done - set up a new one.
-            var new_task = new $.nwg.adventure.create(this.character);
+            var new_task = new $.nwg.adventure.create(this.character).create_base_task();
             new_task.progress();
             task.clear();
         }
