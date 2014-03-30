@@ -159,7 +159,7 @@
 
     Adventure.prototype.start_adventure = function(task) {
         console.log("start_adventure");
-        $('a.' + this.).trigger('click');
+        $('a.' + this.adventures.tier).trigger('click');
         
         return {
             error: false,
