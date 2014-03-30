@@ -117,6 +117,7 @@
         else if(data.state.isEncounter()){
             console.log("isEncounter");
             task.then(this.dicePicker.pick_die.bind(this.dicePicker));
+            task.then(this.clear_modal.bind(this));
         }
         else if(data.state.isSelectEncounterCompanion()){
             console.log("isSelectEncounterCompanion");
