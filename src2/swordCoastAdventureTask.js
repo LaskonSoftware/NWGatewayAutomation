@@ -143,8 +143,8 @@
             task.then(this.clear_modal.bind(this));//clears the daily reward if it appears
             //We're done - set up a new one.
             var new_task = new $.nwg.adventure.create(this.character).create_base_task();
-            new_task.start_in(1500);
-            return {error:false, delay: 2000};
+            new_task.start_in(1000);
+            return {error:false, delay: 1000};
         }
         else if (data.state.isModal()){
             console.log("isModal");
@@ -152,7 +152,9 @@
         }
         //else
 
-        task.then($.nwg.adventure.create(this.character).check_adventure_state.bind(this));
+        var new_task = new $.nwg.adventure.create(this.character).create_base_task();
+        new_task.start_in(1000);
+        //task.then($.nwg.adventure.create(this.character).check_adventure_state.bind(this));
         return {error:false, delay: 3000};
     };
 
@@ -163,7 +165,7 @@
         
         return {
             error: false,
-            delay: 1000
+            delay: 2000
         };
     };
 
@@ -260,7 +262,7 @@
 
         return {
             error: false,
-            delay: 3000
+            delay: 1000
         };
     };
 
@@ -307,13 +309,13 @@
             //console.log("companions not found");
             return {
                 error: false,
-                delay: 5000
+                delay: 1000
             };
         };
         $('a.selectable').eq(0).trigger('click');
         return {
             error: false,
-            delay: 5000
+            delay: 1000
         };
     };
 
@@ -332,7 +334,7 @@
 
         return {
             error:false,
-            delay: 3000
+            delay: 1000
         }
     };
 

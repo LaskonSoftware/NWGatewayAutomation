@@ -11,7 +11,7 @@
             console.log("is_rolling");
             return {
                 error: true,
-                delay: 5000
+                delay: 1000
             };
         }
 
@@ -22,7 +22,7 @@
 
             return {
                 error: false,
-                delay: 2000
+                delay: 1000
             }
         }
 
@@ -41,9 +41,6 @@
         return $('.combatDiceBox').is(':visible') && !$('.modal-window').is(':visible');
     };
 
-    DicePicker.prototype.dice_avai = function(first_argument) {
-        // body...
-    };
 
     $.extend(true, $.nwg, {
         dicePicker: {
