@@ -99,6 +99,11 @@
         else if(data.state.isAdventure()){
             console.log("isAdventure");
             task.then(this.select_encounter.bind(this));
+            task.then(this.select_encounter_companion.bind(this));
+        }
+        else if(data.state.isSelectCompanion()){
+            console.log("isSelectCompanion");
+            task.then(this.select_encounter_companion.bind(this));
         }
         else if(data.state.isEncounter()){
             console.log("isEncounter");
@@ -214,7 +219,7 @@
             var task = self.create_base_task();
             task.then(self.comfirm_adventure_party.bind(self));
             task.then(self.select_encounter.bind(self));
-            task.then(self.select_encoutner_companion.bind(self));
+            task.then(self.select_encounter_companion.bind(self));
             task.then(self.select_die.bind(self));
 
             task.start_in(1500);
@@ -272,8 +277,8 @@
         };
     };
 
-    Adventure.prototype.select_encoutner_companion = function(task) {
-        console.log("select_encoutner_companion");
+    Adventure.prototype.select_encounter_companion = function(task) {
+        console.log("select_encounter_companion");
         var companions = $('a.selectable');
         if(!companions.length){
             //console.log("companions not found");
