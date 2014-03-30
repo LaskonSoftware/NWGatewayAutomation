@@ -159,7 +159,7 @@
 
     Adventure.prototype.start_adventure = function(task) {
         console.log("start_adventure");
-        $('a.' + 'tier-1').trigger('click');
+        $('a.' + this.).trigger('click');
         
         return {
             error: false,
@@ -230,7 +230,6 @@
                     for(var ii = 0; ii < optionalCompanions.length && ii < PARTY_SIZE && ii < PARTY_SIZE - requiredCompanions.length; ii++){
                         companionsToSelect.push($(optionalCompanions[ii]));
                     }
-
                     return false;
                 }
             }
