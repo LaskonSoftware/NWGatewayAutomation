@@ -249,6 +249,15 @@
                 $(companionsToSelect[i]).trigger('click');
             }
         }
+        else{
+            console.log("Not enough compansions available")
+            var delay = this.get_delay();
+            var new_task = new $.nwg.adventure.create(this.character).create_base_task();
+            new_task.start_in(delay);
+
+            task.finish();
+            return;
+        }
 
         return {error:false, delay: 2000};
     };
@@ -336,6 +345,25 @@
             error:false,
             delay: 1000
         }
+    };
+
+    Adventure.prototype.get_delay = function(task) {
+        var reqStam = $('.chooseparty-stamina .number').eq(0).text();
+        var belowStamComp = $('.party-entry.full-sheet.disabled .party-stamina')
+
+        belowStamComp.sort(function(l, r){
+            return (parseInt($(r).find('.below').text()) || 0) < (parseInt($(l).find('.below').text()) || 0);
+        });//Sorts lowest first
+        
+        var stamDown = belowStamComp.eq(0).text();
+        var missing = reqStam - stamDown;
+        var regenDelay = ((((missing-1)*8)+1) * 60 * 1000);//Check in minutes if there's enough stamina
+
+        console.log("[Sword Coast Adventure for " + this.character.name + " delayed for "
+            + regenDelay + " ms at " + new Date().toLocaleString()
+            + " resuming at " + d.toLocaleString());
+
+        
     };
 
     Adventure.prototype.create_base_task = function create_base_task() {
