@@ -22,6 +22,9 @@
             isDiceRoller: function(){
                 return $('.combatDiceBox').is(':visible') && !$('.modal-window').is(':visible');
             },
+            isCombatVictory: function(){
+                return $('.modal-confirm.combat-victory').is(':visible');
+            },
             isModal: function(){
                 return $('.modal-window').is(':visible');
             }
@@ -134,6 +137,15 @@
             //wait
         //isModal
             //clear
+        else if(data.state.isCombatVictory()){
+            console.log("isCombatVictory");
+            task.then(this.clear_modal.bind(this));
+            task.then(this.clear_modela.bind(this));//clears the daily reward if it appears
+            //We're done - set up a new one.
+            var new_task = new $.nwg.adventure.create(this.character);
+            new_task.progress();
+            task.clear();
+        }
         else if (data.state.isModal()){
             console.log("isModal");
             task.then(this.clear_modal.bind(this));
