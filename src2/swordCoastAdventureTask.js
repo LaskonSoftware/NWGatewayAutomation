@@ -15,10 +15,9 @@
                 return $('.encounter-party-list').is(':visible');
             },
             isEncounter: function(){
-                return $('.page-dungeons').is(':visible') && !$('.modal-window').is(':visible');
-            },
-            isCriticalHit: function(){
-                return $('.modal-confirm.combat-wild > h3:contains(' + _text.criticalHit + ')').is(':visible');
+                return $('.page-dungeons').is(':visible') && 
+                        (!$('.modal-window').is(':visible') || 
+                          $('.modal-confirm.combat-wild > h3:contains(' + data.text.criticalHit + ')').is(':visible'));
             },
             isDiceRoller: function(){
                 return $('.combatDiceBox').is(':visible') && !$('.modal-window').is(':visible');
@@ -36,7 +35,7 @@
     };
 
     
-    var Adventure = function(character){
+    var Adventure = function(character, dicePickerBrain){
 
         var _adv = [
             {
@@ -67,6 +66,8 @@
         this.character = character;
         this.changeCharacter = $.nwg.changeCharacter.create(this.character);
         this.adventures = this.character.adv;
+        this.dicePicker = $.nwg.dicePicker.create(!dicePickerBrain ? $.nwg.dicePickerBrain.create() : dicePickerBrain
+                                                    , this.character);;
     };
 
     Adventure.prototype.make_adventure_active = function(task) {
@@ -89,9 +90,12 @@
             task.then(this.clear_adventure_party.bind(this));
             task.then(this.select_adventure_party.bind(this));
         }
-        else if(data.state.isSelectCompanion){
+        else if(data.state.isSelectCompanion()){
             task.then(this.clear_adventure_party.bind(this));
             task.then(this.select_adventure_party.bind(this));   
+        }
+        else if(data.state.isEncounter()){
+            task.then(this.dicePicker.pick_die.bind(this.dicePicker));
         }
         //isAdventure
             //select encounter
@@ -110,6 +114,7 @@
 
 
     Adventure.prototype.start_adventure = function(task) {
+        console.log("start_adventure");
         $('a.' + 'tier-1').trigger('click');
         
         return {
@@ -119,6 +124,7 @@
     };
 
     Adventure.prototype.confirm_adventure = function(task) {
+        console.log("confirm_adventure");
         $('.choosePartyButton > button:contains(' + data.text.chooseYourParty + ')').trigger('click');
 
         return {
@@ -128,6 +134,7 @@
     };
 
     Adventure.prototype.select_adventure_party = function(old_task) {
+        console.log("select_adventure_party");
         //select adventure party member (which attemps to cancel the confirm if up THEN clears THEN selects)
         var PARTY_SIZE = 4;
         var adventures = this.adventures;
@@ -166,7 +173,7 @@
                     if(!matched){
                         optionalCompanions.push(aComp);
                     }
-                    console.log("rC=" + requiredCompanions.length + " | oC=" + optionalCompanions.length);
+                    //console.log("rC=" + requiredCompanions.length + " | oC=" + optionalCompanions.length);
                 });
 
 
@@ -189,8 +196,6 @@
             }
         });
 
-        console.log("[companionsToSelect len=" + companionsToSelect.length + "]");
-        console.log(companionsToSelect);
         if(companionsToSelect.length > 0){
             for(var i = 0; i < companionsToSelect.length && i < PARTY_SIZE; i++){
                 $(companionsToSelect[i]).trigger('click');
@@ -209,6 +214,7 @@
     };
 
     Adventure.prototype.clear_adventure_party = function(task){
+        console.log("clear_adventure_party");
         var partyCloseButtons = $('.party-entry > button.close-button');
         partyCloseButtons.each(function(idx, btn) {
             $(btn).trigger('click');
@@ -221,6 +227,7 @@
     };
 
     Adventure.prototype.comfirm_adventure_party = function(task) {
+        console.log("comfirm_adventure_party");
         $('.modal-window  button:contains(' + data.text.ok + ')').trigger('click');
 
         return {
@@ -230,6 +237,7 @@
     };
 
     Adventure.prototype.select_encounter = function(task) {
+        console.log("select_encounter");
         if($('.dungeon-map-inner').length === 0){
             //console.log("Dungeon not ready");
             return {
@@ -255,6 +263,7 @@
     };
 
     Adventure.prototype.select_encoutner_companion = function(task) {
+        console.log("select_encoutner_companion");
         var companions = $('a.selectable');
         if(!companions.length){
             //console.log("companions not found");
@@ -270,26 +279,14 @@
         };
     };
 
-    Adventure.prototype.select_die = function(task) {
-        if(!dicePicker()){
-            $('.nav-dungeons').trigger('click');
-        }
-
-        task.finish();
-        
-    };
-
     Adventure.prototype.clear_modal = function(task) {
-        // body...
+        console.log("clear_modal");
     };
 
     Adventure.prototype.roll_d20 = function(task) {
-        // body...
+        console.log("roll_d20");
     };
 
-    Adventure.prototype.accept_modal = function(task) {
-        // body...
-    };
 
     Adventure.prototype.create_base_task = function create_base_task() {
         var self = this;
