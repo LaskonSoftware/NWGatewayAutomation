@@ -100,6 +100,7 @@
             console.log("isChooseParty");
             task.then(this.clear_adventure_party.bind(this));
             task.then(this.select_adventure_party.bind(this));
+            task.then(this.comfirm_adventure_party.bind(this));
             /*
             task.then(this.select_encounter.bind(this));
             task.then(this.select_encounter_companion.bind(this));
@@ -231,8 +232,6 @@
             for(var i = 0; i < companionsToSelect.length && i < PARTY_SIZE; i++){
                 $(companionsToSelect[i]).trigger('click');
             }
-
-            //task.then($.nwg.adventure.create(this.character).check_adventure_state.bind(this));
         }
     };
 
