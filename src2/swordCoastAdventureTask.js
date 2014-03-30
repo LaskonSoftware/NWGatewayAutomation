@@ -135,7 +135,6 @@
         else if (data.state.isModal()){
             console.log("isModal");
             task.then(this.clear_modal.bind(this));
-            return {error:false, delay: 3000};
         }
         //else
 
