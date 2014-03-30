@@ -250,7 +250,7 @@
             var delay = this.get_delay();
             var character = this.character;
             character.adv.push(character.adv.shift());
-            
+
             var new_task = new $.nwg.adventure.create(character).create_base_task();
             new_task.then(this.back_to_map.bind(this));
             new_task.start_in(delay);
@@ -355,6 +355,12 @@
     };
 
     Adventure.prototype.get_delay = function(task) {
+
+        var availableCompanions = $('.party-entry.full-sheet.available:not(.promo)>a:not(.selected)');
+        if(availableCompanions.length >= 4){
+            //The idea here is that SOME set might have the ability to run, so we need to try
+            return 60 * 1000;//in a minute
+        }
         var reqStam = $('.chooseparty-stamina .number').eq(0).text();
         var belowStamComp = $('.party-entry.full-sheet.disabled .party-stamina')
 
@@ -367,12 +373,10 @@
         var regenDelay = ((((missing-1)*8)+1) * 60 * 1000);//Check in minutes if there's enough stamina
 
         var d = new Date();
-        d.setMilliseconds(d.getMilliseconds() + milliseconds);
+        d.setMilliseconds(d.getMilliseconds() + regenDelay);
         console.log("[Sword Coast Adventure for " + this.character.name + " delayed for "
             + regenDelay + " ms at " + new Date().toLocaleString()
-            + " resuming at " + d.toLocaleString());
-
-        
+            + " resuming at " + d.toLocaleString());  
     };
 
     Adventure.prototype.create_base_task = function create_base_task() {
