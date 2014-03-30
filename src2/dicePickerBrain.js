@@ -27,6 +27,7 @@
             return disacard.eq(0);
         }
 
+        console.log("no die found");
         return undefined;
     };
 

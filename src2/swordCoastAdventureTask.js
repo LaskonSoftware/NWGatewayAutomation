@@ -11,7 +11,7 @@
             isAdventure: function(){
                 return $('.dungeon-map-inner').is(':visible') && !$('.modal-window').is(':visible');
             },
-            isSelectCompanion: function(){
+            isSelectEncounterCompanion: function(){
                 return $('.encounter-party-list').is(':visible');
             },
             isEncounter: function(){
@@ -79,6 +79,7 @@
     };
 
     Adventure.prototype.check_adventure_state = function(task) {
+        console.log("check_adventure_state");
         //var task = self.crete_base_task();
         /*
             Should only be called from the crate_base_task method
@@ -90,28 +91,35 @@
             task.then(this.confirm_adventure.bind(this));
             task.then(this.clear_adventure_party.bind(this));
             task.then(this.select_adventure_party.bind(this));
+            task.then(this.select_encounter.bind(this));
+            task.then(this.select_encounter_companion.bind(this));
+            task.then(this.dicePicker.pick_die.bind(this.dicePicker));
         }
-        else if(data.state.isSelectCompanion()){
-            console.log("isSelectCompanion");
+        else if(data.state.isChooseParty()){
+            console.log("isChooseParty");
             task.then(this.clear_adventure_party.bind(this));
             task.then(this.select_adventure_party.bind(this));
+            task.then(this.select_encounter.bind(this));
+            task.then(this.select_encounter_companion.bind(this));
+            task.then(this.dicePicker.pick_die.bind(this.dicePicker));
         }
         else if(data.state.isAdventure()){
             console.log("isAdventure");
             task.then(this.select_encounter.bind(this));
             task.then(this.select_encounter_companion.bind(this));
-        }
-        else if(data.state.isSelectCompanion()){
-            console.log("isSelectCompanion");
-            task.then(this.select_encounter_companion.bind(this));
+            task.then(this.dicePicker.pick_die.bind(this.dicePicker));
         }
         else if(data.state.isEncounter()){
             console.log("isEncounter");
             task.then(this.dicePicker.pick_die.bind(this.dicePicker));
         }
+        else if(data.state.isSelectEncounterCompanion()){
+            console.log("isSelectEncounterCompanion");
+            task.then(this.select_encounter_companion.bind(this));
+        }
         //isAdventure
             //select encounter
-        //isSelectCompanion
+        //isSelectEncounterCompanion
             //choose encounter companion
         //isEncounter || isCritical
             //select die
@@ -120,6 +128,7 @@
         //isModal
             //clear
         else if (data.state.isModal){
+            console.log("isModal");
             task.then(this.clear_modal.bind(this));
         }
         //else
@@ -314,6 +323,7 @@
     };
 
     Adventure.prototype.create_base_task = function create_base_task() {
+        console.log("create_base_task");
         var self = this;
         var task = $.task.create(this.changeCharacter.activate.bind(this.changeCharacter));
         task.then(this.make_adventure_active.bind(this));
