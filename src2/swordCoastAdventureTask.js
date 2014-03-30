@@ -140,7 +140,7 @@
         else if(data.state.isCombatVictory()){
             console.log("isCombatVictory");
             task.then(this.clear_modal.bind(this));
-            task.then(this.clear_model.bind(this));//clears the daily reward if it appears
+            task.then(this.clear_modal.bind(this));//clears the daily reward if it appears
             //We're done - set up a new one.
             var new_task = new $.nwg.adventure.create(this.character);
             new_task.progress();
