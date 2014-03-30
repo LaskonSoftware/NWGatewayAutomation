@@ -130,10 +130,8 @@
         else if (data.state.isModal){
             console.log("isModal");
             task.then(this.clear_modal.bind(this));
-            var new_task = $.nwg.adventure.create(this.character).create_base_task();
-            new_task.start_in(2000);
-            task.finish();
-            return;
+            task.then($.nwg.adventure.create(this.character).check_adventure_state());
+            return {error:false, delay: 3000};
         }
         //else
 
