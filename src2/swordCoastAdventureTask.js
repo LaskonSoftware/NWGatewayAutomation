@@ -161,11 +161,13 @@
 
     Adventure.prototype.start_adventure = function(task) {
         console.log("start_adventure");
-        $('a.' + this.adventures.tier).trigger('click');
+        var curTier = this.adventures.tiers.todo[0];
+        console.log("Running " + curTier);
+        $('a.' + curTier).trigger('click');
         
         return {
             error: false,
-            delay: 2000
+            delay: 3000
         };
     };
 
@@ -183,66 +185,61 @@
         console.log("select_adventure_party");
         //select adventure party member (which attemps to cancel the confirm if up THEN clears THEN selects)
         var PARTY_SIZE = 4;
-        var adventures = this.adventures;
+        var curTier = this.adventures.tiers.todo[0];
+        var adventureCompanions = this.adventures.tiers.groups[curTier]
         var self = this;
         var companionsToSelect = [];
 
-        $(adventures).each(function(indx, adventure){
+        var requiredCompanions = [];
+        var optionalCompanions = [];
+        var totalCompanionCount = $('.party-entry.full-sheet:not(.promo)').length;
+        var disabledCount = $('.party-entry.full-sheet.disabled').length;
+        var maxAvailableCount = totalCompanionCount - disabledCount;
+        var availableCompanions = $('.party-entry.full-sheet.available:not(.promo)>a:not(.selected)');
 
-            var tier = adventure.tier;
-            var adventureCompanions = adventure.companions;
-            var requiredCompanions = [];
-            var optionalCompanions = [];
-            var totalCompanionCount = $('.party-entry.full-sheet:not(.promo)').length;
-            var disabledCount = $('.party-entry.full-sheet.disabled').length;
-            var maxAvailableCount = totalCompanionCount - disabledCount;
-            var availableCompanions = $('.party-entry.full-sheet.available:not(.promo)>a:not(.selected)');
+        console.log("adv party");
+        console.log(adventureCompanions);
+        if(adventureCompanions && adventureCompanions.length > 0 && 
+            totalCompanionCount > PARTY_SIZE && maxAvailableCount > PARTY_SIZE){
 
-            console.log("adv party");
-            console.log(adventureCompanions);
-            if(adventureCompanions && adventureCompanions.length > 0 && 
-                totalCompanionCount > PARTY_SIZE && maxAvailableCount > PARTY_SIZE){
-
-                $(availableCompanions).each(function(indx, aCmp){
-                    var aComp = $(aCmp);
-                    var matched = false;
-                    $(adventureCompanions).each(function(indx, cmp){
-                        var companion = aComp.has(':contains(' + cmp.name + ')');
-                        if(companion.length === 1){
-                            matched = true;
-                            if(cmp.required){
-                                requiredCompanions.push(companion);
-                            }
-                            else if(!cmp.excluded){
-                                optionalCompanions.push(companion);
-                            }
+            $(availableCompanions).each(function(indx, aCmp){
+                var aComp = $(aCmp);
+                var matched = false;
+                $(adventureCompanions).each(function(indx, cmp){
+                    var companion = aComp.has(':contains(' + cmp.name + ')');
+                    if(companion.length === 1){
+                        matched = true;
+                        if(cmp.required){
+                            requiredCompanions.push(companion);
                         }
-                    });
-                    if(!matched){
-                        optionalCompanions.push(aComp);
+                        else if(!cmp.excluded){
+                            optionalCompanions.push(companion);
+                        }
                     }
-                    //console.log("rC=" + requiredCompanions.length + " | oC=" + optionalCompanions.length);
                 });
-
-
-                if(requiredCompanions.length + optionalCompanions.length >= PARTY_SIZE){
-                    
-                    for(var i = 0; i < requiredCompanions.length && i < PARTY_SIZE; i++){
-                        companionsToSelect.push($(requiredCompanions[i]));
-                    }
-
-                    for(var ii = 0; ii < optionalCompanions.length && ii < PARTY_SIZE && ii < PARTY_SIZE - requiredCompanions.length; ii++){
-                        companionsToSelect.push($(optionalCompanions[ii]));
-                    }
-                    return false;
+                if(!matched){
+                    optionalCompanions.push(aComp);
                 }
+                //console.log("rC=" + requiredCompanions.length + " | oC=" + optionalCompanions.length);
+            });
+
+
+            if(requiredCompanions.length + optionalCompanions.length >= PARTY_SIZE){
+                
+                for(var i = 0; i < requiredCompanions.length && i < PARTY_SIZE; i++){
+                    companionsToSelect.push($(requiredCompanions[i]));
+                }
+
+                for(var ii = 0; ii < optionalCompanions.length && ii < PARTY_SIZE && ii < PARTY_SIZE - requiredCompanions.length; ii++){
+                    companionsToSelect.push($(optionalCompanions[ii]));
+                }
+
             }
-            else if(totalCompanionCount <= PARTY_SIZE && disabledCount === 0){
-                console.log("available compansions are all");
-                companionsToSelect = availableCompanions;
-                return false;
-            }
-        });
+        }
+        else if(totalCompanionCount <= PARTY_SIZE && disabledCount === 0){
+            console.log("available compansions are all");
+            companionsToSelect = availableCompanions;
+        }
 
         if(companionsToSelect.length > 0){
             for(var i = 0; i < companionsToSelect.length && i < PARTY_SIZE; i++){
@@ -253,12 +250,21 @@
             console.log("Not enough compansions available")
             var delay = this.get_delay();
             var new_task = new $.nwg.adventure.create(this.character).create_base_task();
+            new_task.then(this.back_to_map.bind(this));
             new_task.start_in(delay);
+
+            //Go to the next adventure group
+            this.adventures.tiers.todo[.push(this.adventures.tiers.todo.shift());
 
             task.finish();
             return;
         }
 
+        return {error:false, delay: 2000};
+    };
+
+    Adventure.prototype.back_to_map = function(task) {
+        $('a.chooseparty-back').trigger('click');
         return {error:false, delay: 2000};
     };
 
@@ -359,6 +365,7 @@
         var missing = reqStam - stamDown;
         var regenDelay = ((((missing-1)*8)+1) * 60 * 1000);//Check in minutes if there's enough stamina
 
+        var d = new Date();
         console.log("[Sword Coast Adventure for " + this.character.name + " delayed for "
             + regenDelay + " ms at " + new Date().toLocaleString()
             + " resuming at " + d.toLocaleString());

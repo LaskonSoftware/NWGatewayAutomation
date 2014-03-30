@@ -50,11 +50,45 @@ var thor = {
         },
         todo:['leadership']
     },
-     adv : [
-        {   tier: "tier-2"
+    adv : {
+        tiers:{
+            todo: ['tier-2', 'tier-3'],
+            groups: [
+                'tier-2': [ 
+                    {
+                        "name":"Conan",
+                        "required":true,
+                    },
+                    {
+                        "name":"Manny",
+                        "required":true,
+                    },
+                    {
+                        "name":"Cal",
+                        "exclude":true
+                    },
+                    {
+                        "name":"Drew",
+                        "exclude":true
+                    }
+                ]
+                'tier-3': [ 
+                    {
+                        "name":"Cal",
+                        "required":true,
+                    },
+                    {
+                        "name":"Drew",
+                        "required":true,
+                    },
+                    {
+                        "name":"Manny",
+                        "excluded":true
+                    }
+                ]
+            ]
         }
-
-    ]
+    }
 };
 
 
