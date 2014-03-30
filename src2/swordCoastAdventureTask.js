@@ -295,13 +295,13 @@
             //console.log("companions not found");
             return {
                 error: false,
-                delay: 1000
+                delay: 5000
             };
         };
         $('a.selectable').eq(0).trigger('click');
         return {
             error: false,
-            delay: 1000
+            delay: 5000
         };
     };
 
