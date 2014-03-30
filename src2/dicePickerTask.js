@@ -16,7 +16,9 @@
         var die = this.brain.find_die();
 
         if(!die){
+            console.log("no die");
             var new_task = $.nwg.adventure.create(this.character);
+            console.log(new_task);
             new_task.start_in(1500);
             task.finish();
             return;

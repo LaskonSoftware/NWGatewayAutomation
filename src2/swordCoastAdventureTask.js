@@ -15,7 +15,7 @@
                 return $('.encounter-party-list').is(':visible');
             },
             isEncounter: function(){
-                return $('.page-dungeons').is(':visible') && 
+                return $('.page-dungeon-combat').is(':visible') && 
                         (!$('.modal-window').is(':visible') || 
                           $('.modal-confirm.combat-wild > h3:contains(' + data.text.criticalHit + ')').is(':visible'));
             },
@@ -95,6 +95,10 @@
             console.log("isSelectCompanion");
             task.then(this.clear_adventure_party.bind(this));
             task.then(this.select_adventure_party.bind(this));
+        }
+        else if(data.state.isAdventure()){
+            console.log("isAdventure");
+            task.then(this.select_encounter.bind(this));
         }
         else if(data.state.isEncounter()){
             console.log("isEncounter");
