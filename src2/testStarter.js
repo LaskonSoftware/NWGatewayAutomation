@@ -86,10 +86,6 @@ var thor = {
                 {
                     "name":"Manny",
                     "excluded":true
-                },
-                {
-                    "name":"Spellboard",
-                    "excluded":true
                 }
             ]
         }

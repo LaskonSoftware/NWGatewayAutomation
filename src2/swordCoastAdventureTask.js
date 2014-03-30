@@ -251,8 +251,9 @@
             var character = this.character;
             character.adv.push(character.adv.shift());
 
-            var new_task = new $.nwg.adventure.create(character).create_base_task();
-            new_task.then(this.back_to_map.bind(this));
+            var newAdv = new $.nwg.adventure.create(character);
+            var new_task = newAdv.create_base_task();
+            new_task.then(newAdv.back_to_map.bind(this));
             new_task.start_in(delay);
 
             //Go to the next adventure group
