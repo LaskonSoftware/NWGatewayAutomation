@@ -59,7 +59,7 @@
     };
 
     Profession.prototype.make_profession_active = function(task) {
-        //console.log("PRF:actions:makeProfessionActive");
+        console.log("make_profession_active");
         var tab = $('.nav-professions');
         if(!tab.hasClass('selected')) {
             tab.trigger('click');
@@ -76,7 +76,7 @@
     };
 
     Profession.prototype.change_to_overview = function(task) {
-        //console.log("PRF:actions:changeToOverview");
+        console.log("change_to_overview");
         if(!$('.page-professions-overview').is(':visible')){
             $(data.selector.overview).trigger('click');
 
@@ -93,6 +93,7 @@
     };
 
     Profession.prototype.check_job_progress = function(old_task) {
+        console.log("check_job_progress");
         var self = this;
         var slots = $('.task-slot-locked, .task-slot-progress, .task-slot-finished, .task-slot-open');
 
@@ -121,6 +122,7 @@
     };
 
     Profession.prototype.start_from_progress_bar = function start_from_progress_bar(slot, task) {
+        console.log("start_from_progress_bar");
         /*
             This should only ever be called from check_job_progress
         */
@@ -134,6 +136,7 @@
     };
 
     Profession.prototype.start_job = function start_job(task){
+        console.log("start_job");
         var job = this.assignments.todo[0];
         var selector = data.selector[job];
         $(selector).trigger('click');
@@ -150,7 +153,7 @@
     };
 
     Profession.prototype.assignment_filter = function assignment_filter(task){
-        //console.log("applying filters");
+        console.log("assignment_filter");
         var filterCheckBoxes = ['hide_abovelevel', 'hide_unmetreqs'];
         for (var i = 0; i < filterCheckBoxes.length; i++) {
             var checkbox = filterCheckBoxes[i];
@@ -169,7 +172,7 @@
     };
 
     Profession.prototype.assignment_sort = function assignment_sort(task){
-        //console.log("applying Sort");
+        console.log("assignment_sort");
         var selector = $('[name=sort_level]');
         selector.val(this.assignments.filter.sort);
         selector.trigger('change');
@@ -182,6 +185,7 @@
     };
 
     Profession.prototype.find_assignment = function find_assignment(job, task){
+        console.log("find_assignment");
         var titles = this.assignments.tasks[job];
 
         //console.log(titles);
@@ -234,7 +238,7 @@
     };
 
     Profession.prototype.select_assignment = function select_assignment(assignment, task){
-        //console.log("select_assignment");
+        console.log("select_assignment");
         assignment.find('button:contains(' + data.text._continue + ')').trigger('click');
 
         task.then(this.select_assets.bind(this));
@@ -246,6 +250,7 @@
     };
 
     Profession.prototype.select_assets = function select_assets(task){
+        console.log("select_assets");
         var assetsCount = $('.icon-block.large.any-crafting.Junk.empty').length;
         if(assetsCount > 0){
             task.then(this.open_asset_modal.bind(this));
@@ -264,6 +269,7 @@
     };
 
     Profession.prototype.open_asset_modal = function open_asset_window(task) {
+        console.log("open_asset_modal");
         var delay = 500;
         var assets = $('.icon-block.large.any-crafting.Junk.empty');
         if(assets.length > 0){
@@ -278,6 +284,7 @@
     };
 
     Profession.prototype.select_asset_item = function select_asset_item(task) {
+        console.log("select_asset_item");
         
         var delay = 1000;
         var special = $('.modal-item-list').find('.icon-block.simple.Special');
@@ -313,6 +320,7 @@
 
 
     Profession.prototype.start_task = function start_task(task){
+        console.log("start_task");
         var delay = this.getDelay();
         var startBtn = [];
         try{
@@ -334,6 +342,7 @@
     };
 
     Profession.prototype.collect_reward = function collect_reward(task){
+        console.log("collect_reward");
         var rewards = $('button:contains(' + data.text.collectResult + ')');
         if(!rewards.length) {
             return {
@@ -350,6 +359,7 @@
     };
 
     Profession.prototype.accept_reward = function accept_reward(task){
+        console.log("accept_reward");
         $('.modal-window button:contains(' + data.text.collectResult + ')').trigger('click');
 
         var new_task = this.create_base_task();
@@ -361,6 +371,7 @@
 
 
     Profession.prototype.create_base_task = function create_base_task() {
+        console.log("create_base_task");
         var self = this;
         var task = $.task.create(this.changeCharacter.activate.bind(this.changeCharacter));
         task.then(this.make_profession_active.bind(this));
