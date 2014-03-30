@@ -233,6 +233,8 @@
                 $(companionsToSelect[i]).trigger('click');
             }
         }
+
+        return {error:false, delay: 2000};
     };
 
     Adventure.prototype.clear_adventure_party = function(task){
