@@ -119,8 +119,8 @@
         }
         //isAdventure
             //select encounter
-        //isSelectEncounterCompanion
             //choose encounter companion
+        //isSelectEncounterCompanion
         //isEncounter || isCritical
             //select die
         //isDiceRoller
@@ -130,7 +130,7 @@
         else if (data.state.isModal){
             console.log("isModal");
             task.then(this.clear_modal.bind(this));
-            task.then($.nwg.adventure.create(this.character).check_adventure_state());
+            task.then($.nwg.adventure.create(this.character).check_adventure_state.bind(this)));
             return {error:false, delay: 3000};
         }
         //else

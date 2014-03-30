@@ -19,7 +19,7 @@
 
         if(!die){
             console.log("no die");
-            task.then($.nwg.adventure.create(this.character).check_adventure_state());
+            task.then($.nwg.adventure.create(this.character).check_adventure_state.bind(this));
 
             return {
                 error: false,
