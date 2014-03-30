@@ -35,7 +35,7 @@
     };
 
     
-    var Adventure = function(character, dicePickerBrain){
+    var Adventure = function(character){
 
         var _adv = [
             {
@@ -66,8 +66,7 @@
         this.character = character;
         this.changeCharacter = $.nwg.changeCharacter.create(this.character);
         this.adventures = this.character.adv;
-        this.dicePicker = $.nwg.dicePicker.create(this.character, 
-            !dicePickerBrain ? $.nwg.dicePickerBrain.create() : dicePickerBrain);
+        this.dicePicker = $.nwg.dicePicker.create(this.character, $.nwg.dicePickerBrain.create());
     };
 
     Adventure.prototype.make_adventure_active = function(task) {
@@ -89,25 +88,31 @@
             console.log("isOverWorld");
             task.then(this.start_adventure.bind(this))
             task.then(this.confirm_adventure.bind(this));
+            /*
             task.then(this.clear_adventure_party.bind(this));
             task.then(this.select_adventure_party.bind(this));
             task.then(this.select_encounter.bind(this));
             task.then(this.select_encounter_companion.bind(this));
             task.then(this.dicePicker.pick_die.bind(this.dicePicker));
+            */
         }
         else if(data.state.isChooseParty()){
             console.log("isChooseParty");
             task.then(this.clear_adventure_party.bind(this));
             task.then(this.select_adventure_party.bind(this));
+            /*
             task.then(this.select_encounter.bind(this));
             task.then(this.select_encounter_companion.bind(this));
             task.then(this.dicePicker.pick_die.bind(this.dicePicker));
+            */
         }
         else if(data.state.isAdventure()){
             console.log("isAdventure");
             task.then(this.select_encounter.bind(this));
             task.then(this.select_encounter_companion.bind(this));
+            /*
             task.then(this.dicePicker.pick_die.bind(this.dicePicker));
+            */
         }
         else if(data.state.isEncounter()){
             console.log("isEncounter");
@@ -130,11 +135,11 @@
         else if (data.state.isModal()){
             console.log("isModal");
             task.then(this.clear_modal.bind(this));
-            task.then($.nwg.adventure.create(this.character).check_adventure_state.bind(this));
             return {error:false, delay: 3000};
         }
         //else
 
+        task.then($.nwg.adventure.create(this.character).check_adventure_state.bind(this));
         return {error:false, delay: 3000};
     };
 

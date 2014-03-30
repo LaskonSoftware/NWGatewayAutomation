@@ -11,7 +11,7 @@
             console.log("is_rolling");
             return {
                 error: true,
-                delay: 2000
+                delay: 5000
             };
         }
 
@@ -19,7 +19,6 @@
 
         if(!die){
             console.log("no die");
-            task.then($.nwg.adventure.create(this.character).check_adventure_state.bind(this));
 
             return {
                 error: false,
@@ -29,7 +28,7 @@
 
         die.trigger('click');
 
-        task.then(this.pick_die.bind(this));
+        task.insert(this.pick_die.bind(this));
 
         return {
             error: false,
