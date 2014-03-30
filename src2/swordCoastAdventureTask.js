@@ -253,7 +253,7 @@
 
             var newAdv = new $.nwg.adventure.create(character);
             var new_task = newAdv.create_base_task();
-            new_task.then(newAdv.back_to_map.bind(this));
+            new_task.then(newAdv.back_to_map.bind(new_task));
             new_task.start_in(delay);
 
             //Go to the next adventure group
