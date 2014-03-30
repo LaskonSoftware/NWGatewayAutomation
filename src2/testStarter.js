@@ -50,45 +50,50 @@ var thor = {
         },
         todo:['leadership']
     },
-    adv : {
-        tiers:{
-            todo: ['tier-2', 'tier-3'],
-            groups: [
-                'tier-2': [ 
-                    {
-                        "name":"Conan",
-                        "required":true,
-                    },
-                    {
-                        "name":"Manny",
-                        "required":true,
-                    },
-                    {
-                        "name":"Cal",
-                        "exclude":true
-                    },
-                    {
-                        "name":"Drew",
-                        "exclude":true
-                    }
-                ]
-                'tier-3': [ 
-                    {
-                        "name":"Cal",
-                        "required":true,
-                    },
-                    {
-                        "name":"Drew",
-                        "required":true,
-                    },
-                    {
-                        "name":"Manny",
-                        "excluded":true
-                    }
-                ]
+    adv : [
+        {
+            tier:'tier-2',
+            companions: [ 
+                {
+                    "name":"Conan",
+                    "required":true
+                },
+                {
+                    "name":"Manny",
+                    "required":true
+                },
+                {
+                    "name":"Cal",
+                    "exclude":true
+                },
+                {
+                    "name":"Drew",
+                    "exclude":true
+                }
+            ]
+        },
+        {
+            tier:'tier-3',
+            companions: [ 
+                {
+                    "name":"Cal",
+                    "required":true
+                },
+                {
+                    "name":"Drew",
+                    "required":true
+                },
+                {
+                    "name":"Manny",
+                    "excluded":true
+                },
+                {
+                    "name":"Spellboard",
+                    "excluded":true
+                }
             ]
         }
-    }
+    ]
 };
 
 

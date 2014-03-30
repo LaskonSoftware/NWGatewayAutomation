@@ -161,7 +161,7 @@
 
     Adventure.prototype.start_adventure = function(task) {
         console.log("start_adventure");
-        var curTier = this.adventures.tiers.todo[0];
+        var curTier = this.adventures[0].tier;
         console.log("Running " + curTier);
         $('a.' + curTier).trigger('click');
         
@@ -185,8 +185,7 @@
         console.log("select_adventure_party");
         //select adventure party member (which attemps to cancel the confirm if up THEN clears THEN selects)
         var PARTY_SIZE = 4;
-        var curTier = this.adventures.tiers.todo[0];
-        var adventureCompanions = this.adventures.tiers.groups[curTier]
+        var adventureCompanions = this.adventures[0].companions;
         var self = this;
         var companionsToSelect = [];
 
@@ -254,7 +253,7 @@
             new_task.start_in(delay);
 
             //Go to the next adventure group
-            this.adventures.tiers.todo[.push(this.adventures.tiers.todo.shift());
+            this.adventures.push(this.adventures.shift());
 
             task.finish();
             return;
