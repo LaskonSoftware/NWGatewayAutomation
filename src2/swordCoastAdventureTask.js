@@ -164,7 +164,7 @@
         };
     };
 
-    Adventure.prototype.select_adventure_party = function(old_task) {
+    Adventure.prototype.select_adventure_party = function(task) {
         console.log("select_adventure_party");
         //select adventure party member (which attemps to cancel the confirm if up THEN clears THEN selects)
         var PARTY_SIZE = 4;
@@ -232,16 +232,8 @@
                 $(companionsToSelect[i]).trigger('click');
             }
 
-            var task = self.create_base_task();
-            task.then(self.comfirm_adventure_party.bind(self));
-            task.then(self.select_encounter.bind(self));
-            task.then(self.select_encounter_companion.bind(self));
-            task.then(self.select_die.bind(self));
-
-            task.start_in(1500);
+            //task.then($.nwg.adventure.create(this.character).check_adventure_state.bind(this));
         }
-
-        old_task.finish();
     };
 
     Adventure.prototype.clear_adventure_party = function(task){
