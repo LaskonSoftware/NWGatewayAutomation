@@ -13,7 +13,7 @@
             };
         }
 
-        var die = this.brain.find_die();
+        var die = this.brain.pick_die();
 
         if(!die){
             var new_task = $.nwg.adventure.create(character);

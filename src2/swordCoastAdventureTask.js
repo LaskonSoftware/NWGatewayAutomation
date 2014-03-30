@@ -67,7 +67,7 @@
         this.changeCharacter = $.nwg.changeCharacter.create(this.character);
         this.adventures = this.character.adv;
         this.dicePicker = $.nwg.dicePicker.create(!dicePickerBrain ? $.nwg.dicePickerBrain.create() : dicePickerBrain
-                                                    , this.character);;
+                                                    , this.character);
     };
 
     Adventure.prototype.make_adventure_active = function(task) {
@@ -85,16 +85,19 @@
         */
 
         if(data.state.isOverWorld()){
+            console.log("isOverWorld");
             task.then(this.start_adventure.bind(this))
             task.then(this.confirm_adventure.bind(this));
             task.then(this.clear_adventure_party.bind(this));
             task.then(this.select_adventure_party.bind(this));
         }
         else if(data.state.isSelectCompanion()){
+            console.log("isSelectCompanion");
             task.then(this.clear_adventure_party.bind(this));
             task.then(this.select_adventure_party.bind(this));   
         }
         else if(data.state.isEncounter()){
+            console.log("isEncounter");
             task.then(this.dicePicker.pick_die.bind(this.dicePicker));
         }
         //isAdventure
