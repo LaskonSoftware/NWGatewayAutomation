@@ -66,8 +66,8 @@
         this.character = character;
         this.changeCharacter = $.nwg.changeCharacter.create(this.character);
         this.adventures = this.character.adv;
-        this.dicePicker = $.nwg.dicePicker.create(!dicePickerBrain ? $.nwg.dicePickerBrain.create() : dicePickerBrain
-                                                    , this.character);
+        this.dicePicker = $.nwg.dicePicker.create(this.character, 
+            !dicePickerBrain ? $.nwg.dicePickerBrain.create() : dicePickerBrain);
     };
 
     Adventure.prototype.make_adventure_active = function(task) {
@@ -94,7 +94,7 @@
         else if(data.state.isSelectCompanion()){
             console.log("isSelectCompanion");
             task.then(this.clear_adventure_party.bind(this));
-            task.then(this.select_adventure_party.bind(this));   
+            task.then(this.select_adventure_party.bind(this));
         }
         else if(data.state.isEncounter()){
             console.log("isEncounter");
@@ -110,6 +110,9 @@
             //wait
         //isModal
             //clear
+        else if (data.state.isModal){
+            task.then(this.clear_modal.bind(this));
+        }
         //else
 
         return {error:false, delay: 3000};
@@ -283,13 +286,23 @@
     };
 
     Adventure.prototype.clear_modal = function(task) {
-        console.log("clear_modal");
-    };
+        var m = $('.modal-window');
 
-    Adventure.prototype.roll_d20 = function(task) {
-        console.log("roll_d20");
-    };
+        var okBtn = m.find('button:contains(' + data.text.ok + ')')
+        var d20Btn = m.find('button:contains('+ data.text.d20+')');
 
+        if(okBtn.length === 1){
+            okBtn.trigger('click');
+        }
+        if(d20Btn.l === 1){
+            d20Btn.trigger('click');
+        }
+
+        return {
+            error:false,
+            delay: 3000
+        }
+    };
 
     Adventure.prototype.create_base_task = function create_base_task() {
         var self = this;

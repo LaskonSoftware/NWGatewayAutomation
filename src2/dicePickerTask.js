@@ -16,7 +16,7 @@
         var die = this.brain.find_die();
 
         if(!die){
-            var new_task = $.nwg.adventure.create(character);
+            var new_task = $.nwg.adventure.create(this.character);
             new_task.start_in(1500);
             task.finish();
             return;
@@ -24,8 +24,12 @@
 
         die.trigger('click');
 
-        return {error:false, delay:1000};
+        task.then(this.pick_die.bind(this));
 
+        return {
+            error: false,
+            delay: 1000
+        }
     };
 
 
@@ -33,9 +37,15 @@
         return $('.combatDiceBox').is(':visible') && !$('.modal-window').is(':visible');
     };
 
+    DicePicker.prototype.dice_avai = function(first_argument) {
+        // body...
+    };
+
     $.extend(true, $.nwg, {
         dicePicker: {
             create:function(character, brain){
+                console.log("BRAIN");
+                console.log(brain);                
                 return new DicePicker(character, brain);
             }
         }

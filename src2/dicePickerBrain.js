@@ -4,7 +4,7 @@
     };
 
     DicePickerBrain.prototype.find_die = function() {
-        if(this.is_citical()){
+        if(this.is_critical()){
             return this.find_critical_die();
         }
 
