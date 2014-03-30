@@ -46,8 +46,6 @@
     $.extend(true, $.nwg, {
         dicePicker: {
             create:function(character, brain){
-                console.log("BRAIN");
-                console.log(brain);                
                 return new DicePicker(character, brain);
             }
         }
