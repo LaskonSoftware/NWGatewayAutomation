@@ -196,6 +196,8 @@
             var maxAvailableCount = totalCompanionCount - disabledCount;
             var availableCompanions = $('.party-entry.full-sheet.available:not(.promo)>a:not(.selected)');
 
+            console.log("adv party");
+            console.log(adventureCompanions);
             if(adventureCompanions && adventureCompanions.length > 0 && 
                 totalCompanionCount > PARTY_SIZE && maxAvailableCount > PARTY_SIZE){
 
