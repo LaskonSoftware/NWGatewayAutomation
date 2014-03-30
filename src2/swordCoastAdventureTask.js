@@ -248,12 +248,14 @@
         else{
             console.log("Not enough compansions available")
             var delay = this.get_delay();
-            var new_task = new $.nwg.adventure.create(this.character).create_base_task();
+            var character = this.character;
+            character.adv.push(character.adv.shift());
+            
+            var new_task = new $.nwg.adventure.create(character).create_base_task();
             new_task.then(this.back_to_map.bind(this));
             new_task.start_in(delay);
 
             //Go to the next adventure group
-            this.adventures.push(this.adventures.shift());
 
             task.finish();
             return;
@@ -365,6 +367,7 @@
         var regenDelay = ((((missing-1)*8)+1) * 60 * 1000);//Check in minutes if there's enough stamina
 
         var d = new Date();
+        d.setMilliseconds(d.getMilliseconds() + milliseconds);
         console.log("[Sword Coast Adventure for " + this.character.name + " delayed for "
             + regenDelay + " ms at " + new Date().toLocaleString()
             + " resuming at " + d.toLocaleString());
