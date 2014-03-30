@@ -29,6 +29,10 @@ $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/Neverwi
     return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/professionTask.js');
 }).then(function(){
     return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/swordCoastAdventureTask.js');
+}).then(function(){
+    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/dicePickerBrain.js');
+}).then(function(){
+    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/dicePickerTask.js');
 })
 
 var thor = {
