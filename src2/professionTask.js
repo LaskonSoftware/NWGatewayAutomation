@@ -334,7 +334,7 @@
         else{
             //Something's wrong - skip out
             var new_task = this.create_base_task();
-            new_task.then(this.change_to_overview.bind(this));
+            new_task.then(this.check_job_progress.bind(this));
             new_task.start_in(1500);
 
             task.finish();
