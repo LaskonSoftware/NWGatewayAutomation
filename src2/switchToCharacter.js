@@ -10,7 +10,7 @@
             task.insert(this.selectCharacter.bind(this));
         }
         else{
-            console.log(this.characterName + " is currently active");
+            //console.log(this.characterName + " is currently active");
         }
 
         return{
