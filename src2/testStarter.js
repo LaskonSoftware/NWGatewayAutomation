@@ -54,39 +54,11 @@ var thor = {
         {
             tier:'tier-2',
             companions: [ 
-                {
-                    "name":"Conan",
-                    "required":true
-                },
-                {
-                    "name":"Manny",
-                    "required":true
-                },
-                {
-                    "name":"Cal",
-                    "exclude":true
-                },
-                {
-                    "name":"Drew",
-                    "exclude":true
-                }
             ]
         },
         {
             tier:'tier-3',
             companions: [ 
-                {
-                    "name":"Cal",
-                    "required":true
-                },
-                {
-                    "name":"Drew",
-                    "required":true
-                },
-                {
-                    "name":"Manny",
-                    "excluded":true
-                }
             ]
         }
     ]

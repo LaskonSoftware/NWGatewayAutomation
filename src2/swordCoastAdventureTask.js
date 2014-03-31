@@ -160,14 +160,20 @@
         var requiredCompanions = [];
         var optionalCompanions = [];
         var totalCompanionCount = $('.party-entry.full-sheet:not(.promo)').length;
-        var disabledCount = $('.party-entry.full-sheet.disabled').length;
+        var disabledCount = $('.party-entry.full-sheet.disabled:not(.training)').length;
+        var trainingCount = $('.party-entry.full-sheet.training').length;
         var maxAvailableCount = totalCompanionCount - disabledCount;
         var availableCompanions = $('.party-entry.full-sheet.available:not(.promo)>a:not(.selected)');
 
-        //console.log("adv party");
-        //console.log(adventureCompanions);
+        //console.log("available party");
+        //console.log(availableCompanions);
+        //console.log("total: " + totalCompanionCount);
+        //console.log("disabled: " + disabledCount);
+        //console.log("training: " + trainingCount);
+        //console.log("maxAvailable: " + maxAvailable);
         if(adventureCompanions && adventureCompanions.length > 0 && 
             totalCompanionCount > PARTY_SIZE && maxAvailableCount > PARTY_SIZE){
+            //console.log("many available");
 
             $(availableCompanions).each(function(indx, aCmp){
                 var aComp = $(aCmp);
