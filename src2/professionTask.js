@@ -71,7 +71,7 @@
 
         return {
             error: false,
-            delay: 0
+            delay: 1000
         };
     };
 
@@ -335,7 +335,7 @@
             //Something's wrong - skip out
             var new_task = this.create_base_task();
             new_task.then(this.check_job_progress.bind(this));
-            new_task.start_in(1500);
+            new_task.start_in(3000);
 
             task.finish();
             return;

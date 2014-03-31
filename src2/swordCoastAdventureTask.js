@@ -248,6 +248,10 @@
         else{
             //console.log("Not enough compansions available")
             var delay = this.get_delay();
+            if(delay < 0){
+                task.finish();
+                return;
+            }
             var character = this.character;
             character.adv.push(character.adv.shift());
 
