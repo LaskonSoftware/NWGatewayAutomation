@@ -279,12 +279,16 @@
                 delay: 1000
             };
         }
-        var encounters = $('.overlay.button:not(.complete, .exit, .boss)');
+        var encounters = $('.overlay.button:not(.complete, .exit, .boss, .stairs-down, .stairs-up)');
+        var stairsDown = $('.overlay.button.stairs-down');
         var boss = $('.overlay.button.boss');
 
         //console.log("[encounters=" + encounters.length + "]");
         if(encounters.length > 0){
             encounters.eq(0).trigger('click');
+        }
+        else if(stairsDown.length > 0){
+            stairsDown.eq(0).trigger('click');
         }
         else if(boss.length > 0){
             boss.eq(0).trigger('click');
