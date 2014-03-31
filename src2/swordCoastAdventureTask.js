@@ -375,6 +375,9 @@
         
         var stamDown = belowStamComp.eq(0).text();
         var missing = reqStam - stamDown;
+        if(missing <= 0){
+            missing = 2;//Force a minute
+        }
         var regenDelay = ((((missing-1)*8)+1) * 60 * 1000);//Check in minutes if there's enough stamina
 
         var d = new Date();
