@@ -6,9 +6,9 @@
     };
 
     DicePicker.prototype.pick_die = function(task) {
-            console.log("pick_die");
+        //console.log("pick_die");
         if(this.is_rolling()){
-            console.log("is_rolling");
+            //console.log("is_rolling");
             return {
                 error: true,
                 delay: 1000
@@ -18,7 +18,7 @@
         var die = this.brain.find_die();
 
         if(!die){
-            console.log("no die");
+            //console.log("no die");
 
             return {
                 error: false,
