@@ -25,7 +25,7 @@
 
         return{
             error: false,
-            delay: 2000
+            delay: 1000
         };
     };
 
@@ -35,7 +35,7 @@
 
         return{
             error: false,
-            delay: 2000
+            delay: 1000
         };
     };
 

@@ -93,6 +93,29 @@ var thor = {
 };
 
 
+var wizardia = {
+    name: 'Wizardia',
+    assignments:{
+        filter:{
+            sort: 'asc',
+            hide_abovelevel: true,
+            hide_unmetreqs: true
+        },
+        tasks: {
+            leatherworking: ['Gather Simple Pelts']
+        },
+        todo:['leatherworking']
+    },
+    adv : [
+        {
+            tier:'tier-1',
+            companions: [
+            ]
+        }
+    ]
+};
+
+
 (function($){
     var profTask = $.nwg.adventure.create(thor);
     var task = profTask.create_base_task();
@@ -101,13 +124,33 @@ var thor = {
 
 
 
-    (function($){
-        var profTask = $.nwg.profession.create(thor);
-        var task = profTask.create_base_task();
-        task.then(profTask.check_job_progress.bind(profTask));
-        task.progress();
-        //console.log(task.id);
-    }(jQuery));
+(function($){
+    var profTask = $.nwg.profession.create(thor);
+    var task = profTask.create_base_task();
+    task.then(profTask.check_job_progress.bind(profTask));
+    task.progress();
+}(jQuery));
+
+
+
+(function($){
+    var profTask = $.nwg.adventure.create(wizardia);
+    var task = profTask.create_base_task();
+    task.progress();
+}(jQuery));
+
+
+
+(function($){
+    var profTask = $.nwg.profession.create(wizardia);
+    var task = profTask.create_base_task();
+    task.then(profTask.check_job_progress.bind(profTask));
+    task.progress();
+}(jQuery));
+
+
+
+
 
 
 

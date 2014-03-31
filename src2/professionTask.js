@@ -331,6 +331,15 @@
         if(startBtn.length > 0){
             startBtn.trigger('click');
         }
+        else{
+            //Something's wrong - skip out
+            var new_task = this.create_base_task();
+            new_task.then(this.change_to_overview.bind(this));
+            new_task.start_in(1500);
+
+            task.finish();
+            return;
+        }
 
         //console.log(delay);
         var new_task = this.create_base_task();
