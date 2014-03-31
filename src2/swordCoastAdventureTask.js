@@ -282,17 +282,32 @@
         var encounters = $('.overlay.button:not(.complete, .exit, .boss, .stairs-down, .stairs-up)');
         var stairsDown = $('.overlay.button.stairs-down');
         var boss = $('.overlay.button.boss');
+        var exit = $('.overlay.button.exit');
+        var stairsUp  = $('.overlay.button.stairs-up');
+        var oneHealthPx = $('.bar-tick-container > .bar-tick').eq(0).css('left');
+        var curHealthPx = $('.bar-filled.health-now').css('width');
 
-        //console.log("[encounters=" + encounters.length + "]");
+        var encounter = undefined;
+
+        if(oneHealthPx === curHealthPx){//We don't want to lose out lewts; bail.
+            if(stairsUp.length > 0){
+                encounter = stairsUp.eq(0);
+            }
+            else if(exit.length > 0){
+                encounter = stairsUp.eq(0);
+            }
+        }
         if(encounters.length > 0){
-            encounters.eq(0).trigger('click');
+            encounter = encounters.eq(0);
         }
         else if(stairsDown.length > 0){
-            stairsDown.eq(0).trigger('click');
+            encounter = stairsDown.eq(0);
         }
         else if(boss.length > 0){
-            boss.eq(0).trigger('click');
+            encounter = boss.eq(0);
         }
+
+        encounter.trigger('click');
 
         return {
             error: false,
