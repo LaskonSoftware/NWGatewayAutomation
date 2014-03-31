@@ -91,32 +91,17 @@
             //console.log("isOverWorld");
             task.then(this.start_adventure.bind(this))
             task.then(this.confirm_adventure.bind(this));
-            /*
-            task.then(this.clear_adventure_party.bind(this));
-            task.then(this.select_adventure_party.bind(this));
-            task.then(this.select_encounter.bind(this));
-            task.then(this.select_encounter_companion.bind(this));
-            task.then(this.dicePicker.pick_die.bind(this.dicePicker));
-            */
         }
         else if(data.state.isChooseParty()){
             //console.log("isChooseParty");
             task.then(this.clear_adventure_party.bind(this));
             task.then(this.select_adventure_party.bind(this));
             task.then(this.comfirm_adventure_party.bind(this));
-            /*
-            task.then(this.select_encounter.bind(this));
-            task.then(this.select_encounter_companion.bind(this));
-            task.then(this.dicePicker.pick_die.bind(this.dicePicker));
-            */
         }
         else if(data.state.isAdventure()){
             //console.log("isAdventure");
             task.then(this.select_encounter.bind(this));
             task.then(this.select_encounter_companion.bind(this));
-            /*
-            task.then(this.dicePicker.pick_die.bind(this.dicePicker));
-            */
         }
         else if(data.state.isEncounter()){
             //console.log("isEncounter");
@@ -127,24 +112,9 @@
             //console.log("isSelectEncounterCompanion");
             task.then(this.select_encounter_companion.bind(this));
         }
-        //isAdventure
-            //select encounter
-            //choose encounter companion
-        //isSelectEncounterCompanion
-        //isEncounter || isCritical
-            //select die
-        //isDiceRoller
-            //wait
-        //isModal
-            //clear
         else if(data.state.isCombatVictory()){
             //console.log("isCombatVictory");
             task.then(this.clear_modal.bind(this));
-            task.then(this.clear_modal.bind(this));//clears the daily reward if it appears
-            //We're done - set up a new one.
-            var new_task = new $.nwg.adventure.create(this.character).create_base_task();
-            new_task.start_in(1000);
-            return {error:false, delay: 1000};
         }
         else if (data.state.isModal()){
             //console.log("isModal");
@@ -152,9 +122,6 @@
         }
         //else
 
-        var new_task = new $.nwg.adventure.create(this.character).create_base_task();
-        new_task.start_in(1000);
-        //task.then($.nwg.adventure.create(this.character).check_adventure_state.bind(this));
         return {error:false, delay: 3000};
     };
 
@@ -175,10 +142,11 @@
         //console.log("confirm_adventure");
         $('.choosePartyButton > button:contains(' + data.text.chooseYourParty + ')').trigger('click');
 
-        return {
-            error: false,
-            delay: 1000
-        };
+
+        var new_task = new $.nwg.adventure.create(this.character).create_base_task();
+        new_task.start_in(1000);
+
+        task.finish();
     };
 
     Adventure.prototype.select_adventure_party = function(task) {
@@ -248,12 +216,9 @@
         else{
             //console.log("Not enough compansions available")
             var delay = this.get_delay();
-            if(delay < 0){
-                task.finish();
-                return;
-            }
+
             var character = this.character;
-            character.adv.push(character.adv.shift());
+            //character.adv.push(character.adv.shift());
 
             var newAdv = new $.nwg.adventure.create(character);
             var new_task = newAdv.create_base_task();
@@ -291,10 +256,11 @@
         //console.log("comfirm_adventure_party");
         $('.modal-window  button:contains(' + data.text.ok + ')').trigger('click');
 
-        return {
-            error: false,
-            delay: 1000
-        };
+        
+        var new_task = new $.nwg.adventure.create(this.character).create_base_task();
+        new_task.start_in(1000);
+
+        task.finish();
     };
 
     Adventure.prototype.select_encounter = function(task) {
@@ -326,18 +292,14 @@
     Adventure.prototype.select_encounter_companion = function(task) {
         //console.log("select_encounter_companion");
         var companions = $('a.selectable');
-        if(!companions.length){
-            //console.log("companions not found");
-            return {
-                error: false,
-                delay: 1000
-            };
+        if(companions.length >= 1){
+            $('a.selectable').eq(0).trigger('click');  
         };
-        $('a.selectable').eq(0).trigger('click');
-        return {
-            error: false,
-            delay: 1000
-        };
+        
+        var new_task = new $.nwg.adventure.create(this.character).create_base_task();
+        new_task.start_in(1000);
+
+        task.finish();
     };
 
     Adventure.prototype.clear_modal = function(task) {
@@ -353,10 +315,10 @@
             d20Btn.trigger('click');
         }
 
-        return {
-            error:false,
-            delay: 1000
-        }
+        var new_task = new $.nwg.adventure.create(this.character).create_base_task();
+        new_task.start_in(1000);
+
+        task.finish();
     };
 
     Adventure.prototype.get_delay = function(task) {
@@ -376,7 +338,7 @@
         var stamDown = belowStamComp.eq(0).text();
         var missing = reqStam - stamDown;
         if(missing <= 0){
-            missing = 2;//Force a minute
+            return 0;
         }
         var regenDelay = ((((missing-1)*8)+1) * 60 * 1000);//Check in minutes if there's enough stamina
 
