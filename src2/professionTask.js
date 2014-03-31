@@ -332,13 +332,8 @@
             startBtn.trigger('click');
         }
         else{
-            //Something's wrong - skip out
-            var new_task = this.create_base_task();
-            new_task.then(this.check_job_progress.bind(this));
-            new_task.start_in(3000);
-
-            task.finish();
-            return;
+            //Tried to start new when no space is available
+            delay = 3000;
         }
 
         //console.log(delay);
