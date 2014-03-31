@@ -375,7 +375,7 @@
 
         var d = new Date();
         d.setMilliseconds(d.getMilliseconds() + regenDelay);
-        //console.log("[Sword Coast Adventure for " + this.character.name + " delayed for "
+        console.log("[Sword Coast Adventure for " + this.character.name + " delayed for "
             + regenDelay + " ms at " + new Date().toLocaleString()
             + " resuming at " + d.toLocaleString());  
     };
