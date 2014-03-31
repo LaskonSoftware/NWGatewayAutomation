@@ -81,14 +81,14 @@
     };
 
     Adventure.prototype.check_adventure_state = function(task) {
-        console.log("check_adventure_state");
+        //console.log("check_adventure_state");
         //var task = self.crete_base_task();
         /*
             Should only be called from the crate_base_task method
         */
 
         if(data.state.isOverWorld()){
-            console.log("isOverWorld");
+            //console.log("isOverWorld");
             task.then(this.start_adventure.bind(this))
             task.then(this.confirm_adventure.bind(this));
             /*
@@ -100,7 +100,7 @@
             */
         }
         else if(data.state.isChooseParty()){
-            console.log("isChooseParty");
+            //console.log("isChooseParty");
             task.then(this.clear_adventure_party.bind(this));
             task.then(this.select_adventure_party.bind(this));
             task.then(this.comfirm_adventure_party.bind(this));
@@ -111,7 +111,7 @@
             */
         }
         else if(data.state.isAdventure()){
-            console.log("isAdventure");
+            //console.log("isAdventure");
             task.then(this.select_encounter.bind(this));
             task.then(this.select_encounter_companion.bind(this));
             /*
@@ -119,12 +119,12 @@
             */
         }
         else if(data.state.isEncounter()){
-            console.log("isEncounter");
+            //console.log("isEncounter");
             task.then(this.dicePicker.pick_die.bind(this.dicePicker));
             task.then(this.clear_modal.bind(this));
         }
         else if(data.state.isSelectEncounterCompanion()){
-            console.log("isSelectEncounterCompanion");
+            //console.log("isSelectEncounterCompanion");
             task.then(this.select_encounter_companion.bind(this));
         }
         //isAdventure
@@ -138,7 +138,7 @@
         //isModal
             //clear
         else if(data.state.isCombatVictory()){
-            console.log("isCombatVictory");
+            //console.log("isCombatVictory");
             task.then(this.clear_modal.bind(this));
             task.then(this.clear_modal.bind(this));//clears the daily reward if it appears
             //We're done - set up a new one.
@@ -147,7 +147,7 @@
             return {error:false, delay: 1000};
         }
         else if (data.state.isModal()){
-            console.log("isModal");
+            //console.log("isModal");
             task.then(this.clear_modal.bind(this));
         }
         //else
@@ -160,9 +160,9 @@
 
 
     Adventure.prototype.start_adventure = function(task) {
-        console.log("start_adventure");
+        //console.log("start_adventure");
         var curTier = this.adventures[0].tier;
-        console.log("Running " + curTier);
+        //console.log("Running " + curTier);
         $('a.' + curTier).trigger('click');
         
         return {
@@ -172,7 +172,7 @@
     };
 
     Adventure.prototype.confirm_adventure = function(task) {
-        console.log("confirm_adventure");
+        //console.log("confirm_adventure");
         $('.choosePartyButton > button:contains(' + data.text.chooseYourParty + ')').trigger('click');
 
         return {
@@ -182,7 +182,7 @@
     };
 
     Adventure.prototype.select_adventure_party = function(task) {
-        console.log("select_adventure_party");
+        //console.log("select_adventure_party");
         //select adventure party member (which attemps to cancel the confirm if up THEN clears THEN selects)
         var PARTY_SIZE = 4;
         var adventureCompanions = this.adventures[0].companions;
@@ -196,8 +196,8 @@
         var maxAvailableCount = totalCompanionCount - disabledCount;
         var availableCompanions = $('.party-entry.full-sheet.available:not(.promo)>a:not(.selected)');
 
-        console.log("adv party");
-        console.log(adventureCompanions);
+        //console.log("adv party");
+        //console.log(adventureCompanions);
         if(adventureCompanions && adventureCompanions.length > 0 && 
             totalCompanionCount > PARTY_SIZE && maxAvailableCount > PARTY_SIZE){
 
@@ -236,7 +236,7 @@
             }
         }
         else if(totalCompanionCount <= PARTY_SIZE && disabledCount === 0){
-            console.log("available compansions are all");
+            //console.log("available compansions are all");
             companionsToSelect = availableCompanions;
         }
 
@@ -246,7 +246,7 @@
             }
         }
         else{
-            console.log("Not enough compansions available")
+            //console.log("Not enough compansions available")
             var delay = this.get_delay();
             var character = this.character;
             character.adv.push(character.adv.shift());
@@ -271,7 +271,7 @@
     };
 
     Adventure.prototype.clear_adventure_party = function(task){
-        console.log("clear_adventure_party");
+        //console.log("clear_adventure_party");
         var partyCloseButtons = $('.party-entry > button.close-button');
         partyCloseButtons.each(function(idx, btn) {
             $(btn).trigger('click');
@@ -284,7 +284,7 @@
     };
 
     Adventure.prototype.comfirm_adventure_party = function(task) {
-        console.log("comfirm_adventure_party");
+        //console.log("comfirm_adventure_party");
         $('.modal-window  button:contains(' + data.text.ok + ')').trigger('click');
 
         return {
@@ -294,7 +294,7 @@
     };
 
     Adventure.prototype.select_encounter = function(task) {
-        console.log("select_encounter");
+        //console.log("select_encounter");
         if($('.dungeon-map-inner').length === 0){
             //console.log("Dungeon not ready");
             return {
@@ -320,7 +320,7 @@
     };
 
     Adventure.prototype.select_encounter_companion = function(task) {
-        console.log("select_encounter_companion");
+        //console.log("select_encounter_companion");
         var companions = $('a.selectable');
         if(!companions.length){
             //console.log("companions not found");
@@ -375,13 +375,13 @@
 
         var d = new Date();
         d.setMilliseconds(d.getMilliseconds() + regenDelay);
-        console.log("[Sword Coast Adventure for " + this.character.name + " delayed for "
+        //console.log("[Sword Coast Adventure for " + this.character.name + " delayed for "
             + regenDelay + " ms at " + new Date().toLocaleString()
             + " resuming at " + d.toLocaleString());  
     };
 
     Adventure.prototype.create_base_task = function create_base_task() {
-        console.log("create_base_task");
+        //console.log("create_base_task");
         var self = this;
         var task = $.task.create(this.changeCharacter.activate.bind(this.changeCharacter));
         task.then(this.make_adventure_active.bind(this));
