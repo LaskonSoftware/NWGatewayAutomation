@@ -210,7 +210,7 @@
             }
         }
         else if((totalCompanionCount <= PARTY_SIZE && disabledCount === 0) ||
-                (totalCompanionCount >= PARTY_SIZE)){
+                (maxAvailableCount >= PARTY_SIZE)){
             //console.log("available compansions are all");
             companionsToSelect = availableCompanions;
         }
@@ -284,20 +284,20 @@
         var boss = $('.overlay.button.boss');
         var exit = $('.overlay.button.exit');
         var stairsUp  = $('.overlay.button.stairs-up');
-        var oneHealthPx = $('.bar-tick-container > .bar-tick').eq(0).css('left');
-        var curHealthPx = $('.bar-filled.health-now').css('width');
+        var oneHealthPx = parseInt($('.bar-tick-container > .bar-tick').eq(0).css('left')) + 2;// 2 for safety
+        var curHealthPx = parseInt($('.bar-filled.health-now').css('width'));
 
         var encounter = undefined;
-
-        if(oneHealthPx === curHealthPx){//We don't want to lose out lewts; bail.
+        //console.log("[oneHealthPx=" + oneHealthPx + "] [curHealthPx=" + curHealthPx + "]");
+        if(oneHealthPx >= curHealthPx){//We don't want to lose out lewts; bail.
             if(stairsUp.length > 0){
                 encounter = stairsUp.eq(0);
             }
             else if(exit.length > 0){
-                encounter = stairsUp.eq(0);
+                encounter = exit.eq(0);
             }
         }
-        if(encounters.length > 0){
+        else if(encounters.length > 0){
             encounter = encounters.eq(0);
         }
         else if(stairsDown.length > 0){
