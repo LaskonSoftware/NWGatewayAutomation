@@ -52,7 +52,7 @@ var thor = {
     },
     adv : [
         {
-            tier:'tier-3',
+            tier:'tier-2',
             companions: [ 
             ]
         }
