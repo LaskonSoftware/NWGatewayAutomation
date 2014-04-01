@@ -143,7 +143,7 @@
         $('.choosePartyButton > button:contains(' + data.text.chooseYourParty + ')').trigger('click');
 
 
-        var new_task = new $.nwg.adventure.create(this.character).create_base_task();
+        var new_task = this.create_base_task();
         new_task.start_in(1000);
 
         task.finish();
@@ -224,12 +224,8 @@
             //console.log("Not enough compansions available")
             var delay = this.get_delay();
 
-            var character = this.character;
-            //character.adv.push(character.adv.shift());
-
-            var newAdv = new $.nwg.adventure.create(character);
-            var new_task = newAdv.create_base_task();
-            new_task.then(newAdv.back_to_map.bind(newAdv));
+            var new_task = this.create_base_task();
+            new_task.then(this.back_to_map.bind(this));
             new_task.start_in(delay);
 
             //Go to the next adventure group
@@ -264,7 +260,7 @@
         $('.modal-window  button:contains(' + data.text.ok + ')').trigger('click');
 
         
-        var new_task = new $.nwg.adventure.create(this.character).create_base_task();
+        var new_task = this.create_base_task();
         new_task.start_in(1000);
 
         task.finish();
@@ -322,7 +318,7 @@
             $('a.selectable').eq(0).trigger('click');  
         };
         
-        var new_task = new $.nwg.adventure.create(this.character).create_base_task();
+        var new_task = this.create_base_task();
         new_task.start_in(1000);
 
         task.finish();
@@ -341,7 +337,7 @@
             d20Btn.trigger('click');
         }
 
-        var new_task = new $.nwg.adventure.create(this.character).create_base_task();
+        var new_task = this.create_base_task();
         new_task.start_in(1000);
 
         task.finish();
@@ -372,15 +368,17 @@
         d.setMilliseconds(d.getMilliseconds() + regenDelay);
         console.log("[Sword Coast Adventure for " + this.character.name + " delayed for "
             + regenDelay + " ms at " + new Date().toLocaleString()
-            + " resuming at " + d.toLocaleString());  
+            + " resuming at " + d.toLocaleString());
+
+        return regenDelay;
     };
 
     Adventure.prototype.create_base_task = function create_base_task() {
         //console.log("create_base_task");
         var self = this;
-        var task = $.task.create(this.changeCharacter.activate.bind(this.changeCharacter));
-        task.then(this.make_adventure_active.bind(this));
-        task.then(this.check_adventure_state.bind(this));
+        var task = $.task.create(self.changeCharacter.activate.bind(this.changeCharacter));
+        task.then(self.make_adventure_active.bind(self));
+        task.then(self.check_adventure_state.bind(self));
 
         return task;
     };
