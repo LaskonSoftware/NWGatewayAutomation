@@ -101,7 +101,7 @@
         slots.concat($('.task-slot-progress'));
 
 
-        slots.each(function(idx, slot) {
+        $(slots).each(function(idx, slot) {
             slot = $(slot);
             var time_left = slot.find('.bar-text').text();
             var button_msg = slot.find('.input-field button').text();
