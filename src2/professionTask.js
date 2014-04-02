@@ -95,13 +95,12 @@
     Profession.prototype.check_job_progress = function(old_task) {
         //console.log("check_job_progress");
         var self = this;
-        var slots = []//$('.task-slot-locked, .task-slot-progress, .task-slot-finished, .task-slot-open');
-        slots.concat($('.task-slot-finished'));
-        slots.concat($('.task-slot-open'));
-        slots.concat($('.task-slot-progress'));
+        var slots = $('.task-slot-finished');//$('.task-slot-locked, .task-slot-progress, .task-slot-finished, .task-slot-open');
+        slots = slots.add('.task-slot-open');
+        slots = slots.add('.task-slot-progress');
+console.log(slots);
 
-
-        $(slots).each(function(idx, slot) {
+        slots.each(function(idx, slot) {
             slot = $(slot);
             var time_left = slot.find('.bar-text').text();
             var button_msg = slot.find('.input-field button').text();
