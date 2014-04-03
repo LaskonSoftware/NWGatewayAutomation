@@ -98,7 +98,6 @@
         var slots = $('.task-slot-finished');//$('.task-slot-locked, .task-slot-progress, .task-slot-finished, .task-slot-open');
         slots = slots.add('.task-slot-open');
         slots = slots.add('.task-slot-progress');
-console.log(slots);
 
         slots.each(function(idx, slot) {
             slot = $(slot);
@@ -341,7 +340,7 @@ console.log(slots);
 
         //console.log(delay);
         var new_task = this.create_base_task();
-        new_task.then(this.collect_reward.bind(this));
+        new_task.then(this.collect_reward.bind(this), 5000);// Extra delay?
         new_task.then(this.accept_reward.bind(this));
         new_task.start_in(delay);
 
@@ -380,9 +379,9 @@ console.log(slots);
     Profession.prototype.create_base_task = function create_base_task() {
         //console.log("create_base_task");
         var self = this;
-        var task = $.task.create(this.changeCharacter.activate.bind(this.changeCharacter));
-        task.then(this.make_profession_active.bind(this));
-        task.then(this.change_to_overview.bind(this));
+        var task = $.task.create(this.changeCharacter.activate.bind(this.changeCharacter), 2000);
+        task.then(this.make_profession_active.bind(this), 2000);
+        task.then(this.change_to_overview.bind(this), 2000);
 
         return task;
     };

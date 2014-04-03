@@ -183,10 +183,10 @@
                     if(companion.length === 1){
                         matched = true;
                         if(cmp.required){
-                            requiredCompanions.push(companion);
+                            requiredCompanions.unshift(companion);
                         }
                         else if(!cmp.excluded){
-                            optionalCompanions.push(companion);
+                            optionalCompanions.unshift(companion);
                         }
                     }
                 });

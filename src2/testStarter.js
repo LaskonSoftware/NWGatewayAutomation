@@ -52,12 +52,65 @@ var thor = {
     },
     adv : [
         {
-            tier:'tier-2',
-            companions: [ 
+            tier:'tier-3',
+            companions:[
+                {
+                    name:'Cal',
+                },
+                {
+                    name:'Drew',
+                },
+                {
+                    name:'Crunk',
+                },
+                {
+                    name:'Mushroom',
+                },
             ]
         }
     ]
 };
+
+{
+    tier:'tier-6',
+    companions:[
+        {
+            name:'Cal',
+            required:true,
+        },
+        {
+            name:'Drew',
+            required:true,
+        },
+        {
+            name:'Crunk',
+            required:true,
+        },
+        {
+            name:'Mushroom',
+            required:true,
+        },
+    ]
+    tier:'tier-3',
+    companions:[
+        {
+            name:'Cal',
+            exclude:true,
+        },
+        {
+            name:'Drew',
+            exclude:true,
+        },
+        {
+            name:'Crunk',
+            exclude:true,
+        },
+        {
+            name:'Mushroom',
+            exclude:true,
+        },
+    ]
+}
 
 
 var wizardia = {
