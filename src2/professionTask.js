@@ -357,7 +357,7 @@
             var new_task = this.create_base_task();
             new_task.then(this.collect_reward.bind(this));
             new_task.then(this.accept_reward.bind(this));
-            new_task.start_in(delay);
+            new_task.start_in(2000);
 
             task.finish();
             return;
