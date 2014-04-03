@@ -1,3 +1,15 @@
+/*
+    if discarding
+        search for no match to remaining Trials
+
+    if found-No-match
+        select
+
+    
+
+
+
+*/
 (function($){
 
     var Trials = function(){

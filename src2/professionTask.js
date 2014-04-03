@@ -335,12 +335,13 @@
         }
         else{
             //Tried to start new when no space is available
+            console.log("we're trying again in 3s");
             delay = 3000;
         }
 
         //console.log(delay);
         var new_task = this.create_base_task();
-        new_task.then(this.collect_reward.bind(this), 5000);// Extra delay?
+        new_task.then(this.collect_reward.bind(this));
         new_task.then(this.accept_reward.bind(this));
         new_task.start_in(delay);
 
@@ -351,10 +352,15 @@
         //console.log("collect_reward");
         var rewards = $('button:contains(' + data.text.collectResult + ')');
         if(!rewards.length) {
-            return {
-                error: true,
-                delay: 2000
-            };
+
+            //If we're not there, just restart
+            var new_task = this.create_base_task();
+            new_task.then(this.collect_reward.bind(this));
+            new_task.then(this.accept_reward.bind(this));
+            new_task.start_in(delay);
+
+            task.finish();
+            return;
         }
         rewards.eq(0).trigger('click');
 
@@ -379,9 +385,9 @@
     Profession.prototype.create_base_task = function create_base_task() {
         //console.log("create_base_task");
         var self = this;
-        var task = $.task.create(this.changeCharacter.activate.bind(this.changeCharacter), 2000);
-        task.then(this.make_profession_active.bind(this), 2000);
-        task.then(this.change_to_overview.bind(this), 2000);
+        var task = $.task.create(this.changeCharacter.activate.bind(this.changeCharacter));
+        task.then(this.make_profession_active.bind(this));
+        task.then(this.change_to_overview.bind(this));
 
         return task;
     };
