@@ -9,6 +9,10 @@
         //console.log("pick_die");
         if(this.is_rolling()){
             //console.log("is_rolling");
+
+            //Add a check to not wait more than 10 times; instead end the task, start a new SCA task
+            //This will prevent getting stuck on the dice rolling screen, as has happened.
+
             return {
                 error: true,
                 delay: 1000

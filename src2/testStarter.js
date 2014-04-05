@@ -51,23 +51,48 @@ var thor = {
         todo:['leadership']
     },
     adv : [
-        {
-            tier:'tier-3',
-            companions:[
-                {
-                    name:'Cal',
-                },
-                {
-                    name:'Drew',
-                },
-                {
-                    name:'Crunk',
-                },
-                {
-                    name:'Mushroom',
-                },
-            ]
-        }
+            {
+                tier:'tier-3',
+                companions:[
+                    {
+                        name:'Cal',
+                        required:true,
+                    },
+                    {
+                        name:'Drew',
+                        required:true,
+                    },
+                    {
+                        name:'Crunk',
+                        required:true,
+                    },
+                    {
+                        name:'Mushroom',
+                        required:true,
+                    },
+                ]
+            },
+            {
+                tier:'tier-2',
+                companions:[
+                    {
+                        name:'Cal',
+                        exclude:true,
+                    },
+                    {
+                        name:'Drew',
+                        exclude:true,
+                    },
+                    {
+                        name:'Crunk',
+                        exclude:true,
+                    },
+                    {
+                        name:'Mushroom',
+                        exclude:true,
+                    },
+                ]
+            }
     ]
 };
 
@@ -148,6 +173,16 @@ var wizardia = {
     var profTask = $.nwg.profession.create(thor);
     var task = profTask.create_base_task();
     task.then(profTask.check_job_progress.bind(profTask));
+    task.progress();
+}(jQuery));
+
+
+
+
+(function($){
+    var profTask = $.nwg.profession.create(thor);
+    var task = profTask.create_base_task();
+    task.then(profTask.start_job.bind(profTask));
     task.progress();
 }(jQuery));
 

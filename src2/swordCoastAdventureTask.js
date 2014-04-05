@@ -40,32 +40,6 @@
     
     var Adventure = function(character){
 
-        var _adv = [
-            {
-                tier: "tier-[1|2|3|4|5|6]",
-                companions: [ 
-                    {
-                        "name":"cleric",
-                        "required":true||false,
-                    },
-                    {
-                        "name":"guy",
-                        "required":true||false,
-                    }
-                ]
-            },
-            {
-                tier: "tier-1",
-                companions: [ 
-                    {
-                        "name":"lowbies",
-                        "required":true||false,
-                    }
-                ]
-            },
-
-        ];
-
         this.character = character;
         this.changeCharacter = $.nwg.changeCharacter.create(this.character);
         this.adventures = this.character.adv;
@@ -291,6 +265,7 @@
             }
             else if(exit.length > 0){
                 encounter = exit.eq(0);
+                task.then(this.clear_modal);
             }
         }
         else if(encounters.length > 0){

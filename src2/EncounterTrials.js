@@ -5,11 +5,22 @@
     if found-No-match
         select
 
-    
+    if not max value for required rune && using won't WIN - re-roll
 
+    ----------------------
+    SIMPLE_CASE: Will current die set finish the encounter - random select
+    
+    Number of dice left for each rune
+    trial 1
+        rune 1 : #
+        rune 2 : #
+    trial 2
+        rune 1 : #
+        rune 3 : #
 
 
 */
+
 (function($){
 
     var Trials = function(){
@@ -64,6 +75,13 @@
 
 
 (function($){
+    $.extend(true, $.nwg, {
+        dice: {}
+        }
+    });
+}(jQuery));
+
+(function($){
 
     var Die = function(dieElement){
         if(!dieElement){
@@ -94,7 +112,7 @@
         return -1;
     };
 
-    $.extend(true, $.nwg, {
+    $.extend(true, $.nwg.dice, {
         die: {
             parse: function(dieElement){
                 return new Die(dieElement);
