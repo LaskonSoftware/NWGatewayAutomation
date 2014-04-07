@@ -141,6 +141,13 @@
         //console.log("start_job");
         var job = this.assignments.todo[0];
         var selector = data.selector[job];
+        var catchEmpties = $('button:contains(' + data.text.chooseTask + ')').trigger('click');
+        if(catchEmpties.lenght >= 2){//Obviously the current will
+            var new_task = this.create_base_task();
+            new_task.then(this.start_job.bind(this));
+            new_task.start_in(5000);
+        }
+
         $(selector).trigger('click');
 
         task.then(this.assignment_filter.bind(this));
@@ -323,19 +330,16 @@
 
     Profession.prototype.start_task = function start_task(task){
         //console.log("start_task");
-        var delay = this.getDelay();
-        var startBtn = [];
-        try{
-            startBtn = $('div :not(.disabled) >button:contains(' + data.text.startTask + ')');
-        }catch(err){
-            //swallow
-        }
+        var delay = 0;
+        var startBtn = $('div :not(.disabled) >button:contains(' + data.text.startTask + ')');
+
         if(startBtn.length > 0){
             startBtn.trigger('click');
+            delay = this.getDelay();
         }
         else{
             //Tried to start new when no space is available
-            console.log("we're trying again in 3s");
+            //console.log("we're trying again in 3s");
             delay = 3000;
         }
 

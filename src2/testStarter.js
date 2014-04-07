@@ -50,7 +50,15 @@ var thor = {
         },
         todo:['leadership']
     },
-    adv : [
+    adv : [{
+                tier:'tier-3',
+                companions:[]}
+    ]
+};
+//This needs to operate like professions do, seaching for specified companions and resetting based on their delay.
+//the lesser selection is too hacky to work around
+
+
             {
                 tier:'tier-3',
                 companions:[
@@ -70,6 +78,31 @@ var thor = {
                         name:'Mushroom',
                         required:true,
                     },
+                    {
+                        name:'Spellboard',
+                        excluded:true,
+                    },
+                    {
+                        name:'Manny',
+                        excluded:true,
+                    },
+                    {
+                        name:'Conan',
+                        excluded:true,
+                    },
+                    {
+                        name:'Shaz',
+                        excluded:true,
+                    },
+                    {
+                        name:'Dwalia',
+                        excluded:true,
+                    },
+                    {
+                        name:'Budz',
+                        excluded:true,
+                    },
+
                 ]
             },
             {
@@ -77,67 +110,22 @@ var thor = {
                 companions:[
                     {
                         name:'Cal',
-                        exclude:true,
+                        excluded:true,
                     },
                     {
                         name:'Drew',
-                        exclude:true,
+                        excluded:true,
                     },
                     {
                         name:'Crunk',
-                        exclude:true,
+                        excluded:true,
                     },
                     {
                         name:'Mushroom',
-                        exclude:true,
+                        excluded:true,
                     },
                 ]
             }
-    ]
-};
-
-{
-    tier:'tier-6',
-    companions:[
-        {
-            name:'Cal',
-            required:true,
-        },
-        {
-            name:'Drew',
-            required:true,
-        },
-        {
-            name:'Crunk',
-            required:true,
-        },
-        {
-            name:'Mushroom',
-            required:true,
-        },
-    ]
-    tier:'tier-3',
-    companions:[
-        {
-            name:'Cal',
-            exclude:true,
-        },
-        {
-            name:'Drew',
-            exclude:true,
-        },
-        {
-            name:'Crunk',
-            exclude:true,
-        },
-        {
-            name:'Mushroom',
-            exclude:true,
-        },
-    ]
-}
-
-
 var wizardia = {
     name: 'Wizardia',
     assignments:{

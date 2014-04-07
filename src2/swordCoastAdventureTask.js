@@ -80,7 +80,8 @@
         else if(data.state.isEncounter()){
             //console.log("isEncounter");
             task.then(this.dicePicker.pick_die.bind(this.dicePicker));
-            task.then(this.clear_modal.bind(this));
+            //task.then(this.clear_modal.bind(this));
+            task.then(this.check_adventure_state.bind(this));
         }
         else if(data.state.isSelectEncounterCompanion()){
             //console.log("isSelectEncounterCompanion");
@@ -89,10 +90,12 @@
         else if(data.state.isCombatVictory()){
             //console.log("isCombatVictory");
             task.then(this.clear_modal.bind(this));
+            task.then(this.check_adventure_state.bind(this));
         }
         else if (data.state.isModal()){
             //console.log("isModal");
             task.then(this.clear_modal.bind(this));
+            task.then(this.check_adventure_state.bind(this));
         }
         //else
 
@@ -150,10 +153,10 @@
             //console.log("many available");
 
             $(availableCompanions).each(function(indx, aCmp){
-                var aComp = $(aCmp);
+                var availableCompanion = $(aCmp);
                 var matched = false;
                 $(adventureCompanions).each(function(indx, cmp){
-                    var companion = aComp.has(':contains(' + cmp.name + ')');
+                    var companion = availableCompanion.has(':contains(' + cmp.name + ')');
                     if(companion.length === 1){
                         matched = true;
                         if(cmp.required){
@@ -163,9 +166,10 @@
                             optionalCompanions.unshift(companion);
                         }
                     }
+
                 });
                 if(!matched){
-                    optionalCompanions.push(aComp);
+                    optionalCompanions.push(availableCompanion);
                 }
                 //console.log("rC=" + requiredCompanions.length + " | oC=" + optionalCompanions.length);
             });
@@ -265,7 +269,9 @@
             }
             else if(exit.length > 0){
                 encounter = exit.eq(0);
-                task.then(this.clear_modal);
+                task.then(this.clear_modal);//OK Exit
+                task.then(this.clear_modal);//Accept Rewards
+                task.then(this.check_adventure_state.bind(this));
             }
         }
         else if(encounters.length > 0){
@@ -308,14 +314,9 @@
         if(okBtn.length === 1){
             okBtn.trigger('click');
         }
-        if(d20Btn.l === 1){
+        if(d20Btn.length === 1){
             d20Btn.trigger('click');
         }
-
-        var new_task = this.create_base_task();
-        new_task.start_in(1000);
-
-        task.finish();
     };
 
     Adventure.prototype.get_delay = function(task) {
