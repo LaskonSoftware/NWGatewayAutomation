@@ -75,7 +75,6 @@
         else if(data.state.isAdventure()){
             //console.log("isAdventure");
             task.then(this.select_encounter.bind(this));
-            task.then(this.select_encounter_companion.bind(this));
         }
         else if(data.state.isEncounter()){
             //console.log("isEncounter");
@@ -274,14 +273,17 @@
                 task.then(this.check_adventure_state.bind(this));
             }
         }
-        else if(encounters.length > 0){
-            encounter = encounters.eq(0);
-        }
-        else if(stairsDown.length > 0){
-            encounter = stairsDown.eq(0);
-        }
-        else if(boss.length > 0){
-            encounter = boss.eq(0);
+        else{
+            if(encounters.length > 0){
+                encounter = encounters.eq(0);
+            }
+            else if(stairsDown.length > 0){
+                encounter = stairsDown.eq(0);
+            }
+            else if(boss.length > 0){
+                encounter = boss.eq(0);
+            }
+            task.then(this.select_encounter_companion.bind(this));
         }
 
         encounter.trigger('click');
@@ -330,10 +332,10 @@
         var belowStamComp = $('.party-entry.full-sheet.disabled .party-stamina')
 
         belowStamComp.sort(function(l, r){
-            return (parseInt($(r).find('.below').text()) || 0) < (parseInt($(l).find('.below').text()) || 0);
+            return (parseInt($(l).find('.below').text()) || 0) < (parseInt($(r).find('.below').text()) || 0);
         });//Sorts lowest first
         
-        var stamDown = belowStamComp.eq(0).text();
+        var stamDown = belowStamComp.eq(0).text().trim();
         var missing = reqStam - stamDown;
         if(missing <= 0){
             return 0;

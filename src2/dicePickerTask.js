@@ -3,6 +3,7 @@
     var DicePicker = function(character, brain){
         this.brain = brain;
         this.character = character;
+        this.rolling_ctr = 0;
     };
 
     DicePicker.prototype.pick_die = function(task) {
@@ -12,10 +13,17 @@
 
             //Add a check to not wait more than 10 times; instead end the task, start a new SCA task
             //This will prevent getting stuck on the dice rolling screen, as has happened.
+            if(this.rolling_ctr++ > 10){
+                
+                return {
+                    error: false,
+                    delay: 1000
+                };
+            }
 
             return {
                 error: true,
-                delay: 1000
+                delay: 500 * this.rolling_ctr + 500
             };
         }
 
@@ -32,7 +40,7 @@
 
         die.trigger('click');
 
-        task.insert(this.pick_die.bind(this));
+        task.insert(this.pick_die.bind(this)); 
 
         return {
             error: false,

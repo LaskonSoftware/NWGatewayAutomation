@@ -141,12 +141,6 @@
         //console.log("start_job");
         var job = this.assignments.todo[0];
         var selector = data.selector[job];
-        var catchEmpties = $('button:contains(' + data.text.chooseTask + ')').trigger('click');
-        if(catchEmpties.lenght >= 2){//Obviously the current will
-            var new_task = this.create_base_task();
-            new_task.then(this.start_job.bind(this));
-            new_task.start_in(5000);
-        }
 
         $(selector).trigger('click');
 
@@ -154,6 +148,13 @@
         task.then(this.assignment_sort.bind(this));
         task.then(this.find_assignment.bind(this), job);
         task.then(this.select_assignment.bind(this));
+
+        var catchEmpties = $('button:contains(' + data.text.chooseTask + ')').trigger('click');
+        if(catchEmpties.length >= 2){//Obviously the current will
+            var new_task = this.create_base_task();
+            new_task.then(this.start_job.bind(this));
+            new_task.start_in(1500);
+        }
 
         return {
             error: false,
