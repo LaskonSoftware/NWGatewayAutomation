@@ -237,11 +237,21 @@
         $('.modal-window  button:contains(' + data.text.ok + ')').trigger('click');
 
         
+        task.then(this.start_new.bind(this));
+
+        return {
+            error: false,
+            delay: 1000
+        };
+    };
+
+    Adventure.prototype.start_new = function(old_task){
+
         var new_task = this.create_base_task();
         new_task.start_in(1000);
 
-        task.finish();
-    };
+        old_task.finish();
+    }
 
     Adventure.prototype.select_encounter = function(task) {
         //console.log("select_encounter");
@@ -270,8 +280,8 @@
                 encounter = exit.eq(0);
                 task.then(this.clear_modal);//OK Exit
                 task.then(this.clear_modal);//Accept Rewards
-                task.then(this.check_adventure_state.bind(this));
             }
+            task.then(this.start_new.bind(this));
         }
         else{
             if(encounters.length > 0){
@@ -319,6 +329,11 @@
         if(d20Btn.length === 1){
             d20Btn.trigger('click');
         }
+
+        return {
+            error: false,
+            delay: 1000
+        };
     };
 
     Adventure.prototype.get_delay = function(task) {
