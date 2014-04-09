@@ -151,7 +151,7 @@
 
         var catchEmpties = $('button:contains(' + data.text.chooseTask + ')').trigger('click');
         if(catchEmpties.length >= 2){//Obviously the current will
-            console.log("Found more than 2 [" + data.tezxt.chooseTask + "]");
+            console.log("Found more than 2 [" + data.text.chooseTask + "]");
             var new_task = this.create_base_task();
             new_task.then(this.start_job.bind(this));
             new_task.start_in(1500);
