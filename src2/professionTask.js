@@ -149,13 +149,15 @@
         task.then(this.find_assignment.bind(this), job);
         task.then(this.select_assignment.bind(this));
 
+    /*
         var catchEmpties = $('button:contains(' + data.text.chooseTask + ')').trigger('click');
         if(catchEmpties.length >= 2){//Obviously the current will
-            console.log("Found more than 2 [" + data.text.chooseTask + "]");
+            //console.log("Found more than 2 [" + data.text.chooseTask + "]");
             var new_task = this.create_base_task();
             new_task.then(this.start_job.bind(this));
             new_task.start_in(1500);
         }
+        */
 
         return {
             error: false,
@@ -357,17 +359,7 @@
     Profession.prototype.collect_reward = function collect_reward(task){
         //console.log("collect_reward");
         var rewards = $('button:contains(' + data.text.collectResult + ')');
-        if(!rewards.length) {
 
-            //If we're not there, just restart
-            var new_task = this.create_base_task();
-            new_task.then(this.collect_reward.bind(this));
-            new_task.then(this.accept_reward.bind(this));
-            new_task.start_in(2000);
-
-            task.finish();
-            return;
-        }
         rewards.eq(0).trigger('click');
 
         return {
@@ -382,7 +374,7 @@
 
         var new_task = this.create_base_task();
         new_task.then(this.start_job.bind(this));
-        new_task.start_in(1500);
+        new_task.start_in(3000);
 
         task.finish();
     };
