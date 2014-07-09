@@ -68,18 +68,18 @@ Here is what I actually used (minus char name) to run the automation.
 
 ```javascript
 //This pulls all the requisite files
-$.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/NeverwinterGateway.js').then(function(){
-    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src/js/taskPromise.js');
+$.getScript('https://rawgithub.com/LaskonSoftware/NWGatewayAutomation/master/src2/NeverwinterGateway.js').then(function(){
+    return $.getScript('https://rawgithub.com/LaskonSoftware/NWGatewayAutomation/master/src/js/taskPromise.js');
 }).then(function(){
-    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/switchToCharacter.js');
+    return $.getScript('https://rawgithub.com/LaskonSoftware/NWGatewayAutomation/master/src2/switchToCharacter.js');
 }).then(function(){
-    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/professionTask.js');
+    return $.getScript('https://rawgithub.com/LaskonSoftware/NWGatewayAutomation/master/src2/professionTask.js');
 }).then(function(){
-    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/swordCoastAdventureTask.js');
+    return $.getScript('https://rawgithub.com/LaskonSoftware/NWGatewayAutomation/master/src2/swordCoastAdventureTask.js');
 }).then(function(){
-    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/dicePickerBrain.js');
+    return $.getScript('https://rawgithub.com/LaskonSoftware/NWGatewayAutomation/master/src2/dicePickerBrain.js');
 }).then(function(){
-    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/dicePickerTask.js');
+    return $.getScript('https://rawgithub.com/LaskonSoftware/NWGatewayAutomation/master/src2/dicePickerTask.js');
 })
 
 //This is my character definition
