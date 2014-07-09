@@ -61,3 +61,67 @@ It will run adventures until it can't run no more adventures.
 
 
 There is a bit more to it; but it never got fully functional before I lost interest in fine tuning. I proved the concept and had fun with it - I moved on. Putting the readme up to better help anyone else finding this.
+
+To run this requires the console dev tool of; more or less, any browser. I used firebug in firefox mostly.
+
+Here is what I actually used (minus char name) to run the automation.
+
+```javascript
+//This pulls all the requisite files
+$.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/NeverwinterGateway.js').then(function(){
+    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src/js/taskPromise.js');
+}).then(function(){
+    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/switchToCharacter.js');
+}).then(function(){
+    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/professionTask.js');
+}).then(function(){
+    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/swordCoastAdventureTask.js');
+}).then(function(){
+    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/dicePickerBrain.js');
+}).then(function(){
+    return $.getScript('https://rawgithub.com/Fyzxs/NWGatewayAutomation/master/src2/dicePickerTask.js');
+})
+
+//This is my character definition
+var thor = {
+    name: 'Thor',
+    assignments:{
+        filter:{
+            sort: 'desc',
+            hide_abovelevel: true,
+            hide_unmetreqs: true
+        },
+        tasks: {
+            leadership: ['Assemble Maps', 'Chart Region', 'Explore Local Area', 'Patrol the Mines', 'Feed the Needy', 'War Games Training'],
+            tailoring:['Intensive Scrap Gathering'],
+            artificing:['Gather Ore and Wood']
+        },
+        todo:['leadership']
+    },
+    adv : [{
+                tier:'tier-3',
+                companions:[]}
+    ]
+};
+
+//This starts the profession
+(function($){
+    var profTask = $.nwg.profession.create(thor);
+    var task = $.task.create(profTask.start);
+    task.progress();
+}(jQuery));
+
+//This starts the adventure
+
+(function($){
+    var profTask = $.nwg.adventure.create(thor);
+    var task = profTask.create_base_task();
+    task.progress();
+}(jQuery));
+
+```
+
+The crafting and adventure can be run at the same time. The system queues so they don't step on toes. Might look odd; but should be OK for the most part.
+
+
+There are still glitches; sometimes the adventure module will glitch and get stuck... Hence this mostly works. :)
